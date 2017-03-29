@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kubernetes on JeffSloyer.io</title>
+    <link>http://www.jeffsloyer.io/tags/kubernetes/index.xml</link>
+    <description>Recent content in Kubernetes on JeffSloyer.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Code released under the Apache 2.0 license.</copyright>
+    <atom:link href="http://www.jeffsloyer.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Using Cabin with the IBM Bluemix Container Service</title>
+      <link>http://www.jeffsloyer.io/post/ibm-container-service-cabin/</link>
+      <pubDate>Wed, 29 Mar 2017 09:45:24 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/ibm-container-service-cabin/</guid>
+      <description>
+
+&lt;p&gt;I haven&amp;rsquo;t posted in awhile because I have taken a new role at IBM and helped lead the development of the
+new IBM Bluemix Container Service that allows you to run managed Kubernetes clusters on IBM.&lt;/p&gt;
+
+&lt;p&gt;For a little background, IBM has introduced a managed Kubernetes Service, for more information
+please read the announce post &lt;a href=&#34;https://www.ibm.com/blogs/bluemix/2017/03/kubernetes-now-available-ibm-bluemix-container-service/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.skippbox.com/cabin/&#34;&gt;Cabin&lt;/a&gt; is a pretty cool mobile app that lets you manage your Kubernetes cluster through your Android or iPhone.  Check out the video below on a walkthrough of Cabin.&lt;/p&gt;
+
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/MzeEgu3gJRE&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+
+
+&lt;h2 id=&#34;create-your-bluemix-account&#34;&gt;Create your Bluemix account&lt;/h2&gt;
+
+&lt;p&gt;To get started you will first need a Bluemix account, head over to &lt;a href=&#34;http://bluemix.net&#34;&gt;bluemix.net&lt;/a&gt; and sign up.&lt;/p&gt;
+
+&lt;h2 id=&#34;cli-setup&#34;&gt;CLI Setup&lt;/h2&gt;
+
+&lt;p&gt;Once you sign up you will need to download our CLI.  Head over to &lt;a href=&#34;http://clis.ng.bluemix.net&#34;&gt;http://clis.ng.bluemix.net&lt;/a&gt; to download our installer.  Open the installer and go through the prompts to install the CLI.&lt;/p&gt;
+
+&lt;p&gt;Once you have the CLI you will need to login to the CLI, to do that do the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bx login
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It will ask for your username and password.  If you have an account already it might ask you to select an account, org, and space.&lt;/p&gt;
+
+&lt;p&gt;Once you are logged in you will need to download our plugin to create a Kubernetes cluster.  To do that do the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bx plugin install container-service -r Bluemix
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;create-your-kubernetes-cluster&#34;&gt;Create your Kubernetes Cluster&lt;/h2&gt;
+
+&lt;p&gt;To create a free Kubernetes cluster run the following, replacing clustername with anything of your choosing:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bx cs init
+bx cs cluster-create --name clustername
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you had a paid account you can create a cluster with the following command.  It might ask you for VLAN&amp;rsquo;s.  If it does you can get your available VLAN&amp;rsquo;s by running &lt;code&gt;bx cs vlans dal10&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bx cs init
+bx cs cluster-create --name clustername --datacenter dal10 --workers 3 --machine-type b1c.4x16
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;An example of choosing your own VLAN&amp;rsquo;s you will see below.  Also, you can customize the machine type by listing all the available machine types, run &lt;code&gt;bx machine-types dal10&lt;/code&gt;.  &lt;strong&gt;Note&lt;/strong&gt; you will need to enter the VLAN ID.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bx cs init
+bx cs cluster-create --name clustername --datacenter dal10 --public-vlan 12356 --private-vlan 67891 --workers 3 --machine-type u1c.16x64
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;setup-cabin&#34;&gt;Setup Cabin&lt;/h2&gt;
+
+&lt;p&gt;The following instructions are quite hacky and we will be rolling out something more permanent and easier in the near future.&lt;/p&gt;
+
+&lt;p&gt;First you will need to download the cluster config for your Kubernetes cluster.  You will need to wait until the cluster is provisioned.  To see if it&amp;rsquo;s been provisioned run &lt;code&gt;bx cs clusters&lt;/code&gt;.  Under &lt;code&gt;state&lt;/code&gt; it should show &lt;code&gt;deployed&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Next, you will need to download the Kube config, to do that run what is below replacing &lt;code&gt;clustername&lt;/code&gt; with the name of your cluster.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bx cs cluster-config clustername
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It will download a file and print out something like &lt;code&gt;export KUBECONFIG=/Users/jsloyer/.bluemix/plugins/container-service/clusters/jefftest/kube-config-prod-dal10-jefftest.yml&lt;/code&gt;.  Run the command that it prints out, if you are on Windows it will be slightly different, it will start with &lt;code&gt;set&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Next, you will need the hostname of your cluster, to get that run the following replacing &lt;code&gt;clustername&lt;/code&gt; with the name of your cluster.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bx cs cluster-get clustername
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You will want to copy the &lt;code&gt;Master URL&lt;/code&gt;.  I have pasted mine below omitting my port and part of my IP.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ bx cs cluster-get jefftest
+Retrieving cluster jefftest...
+OK
+Name:		jefftest
+ID:		xxxxxx
+Created:	2017-03-28T22:54:50+0000
+State:		deployed
+Master URL:	https://169.47.xxx.xxx:xxxx
+Ingress host:	-
+Ingress secret:	-
+Workers:	1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lastly, you will need to get the token for your Kube cluster.  To do that run the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl get secrets | grep default-token
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It will output something like the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl get secrets | grep default-token
+default-token-gjswg      kubernetes.io/service-account-token   3         21h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the following command replace xxxx with the couple of random characters from the command above.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl get secret default-token-xxxx -o yaml | grep token
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It is going to output a bunch of stuff, you are going to want to copy the value for &lt;code&gt;token&lt;/code&gt; for the next step.&lt;/p&gt;
+
+&lt;p&gt;With the copied value for &lt;code&gt;token&lt;/code&gt; run the following, &lt;strong&gt;note&lt;/strong&gt; the following will only work on Mac or Linux&amp;hellip;  You will want to replace token with the really long value you copied.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo token | base64 --decode
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If everything worked you have something outputted that starts with &lt;code&gt;ey&lt;/code&gt;.  It if outputs some garbled text you probably copied it wrong, in writing this I missed a letter on the beginning of mine so be careful.&lt;/p&gt;
+
+&lt;p&gt;you can then use that in app for your token&lt;/p&gt;
+
+&lt;p&gt;Open up the Cabin app on your phone, if you havent downloaded it you can download it from Google Play or the App Store by searching for &lt;code&gt;cabin kubernetes&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Open the app enter the &lt;code&gt;Master URL&lt;/code&gt; from a couple steps above in the URL field, make sure you have &lt;code&gt;https://&lt;/code&gt; and the port after the IP address.&lt;/p&gt;
+
+&lt;p&gt;Under authentication tap &lt;code&gt;Token&lt;/code&gt;, paste in the value for the token from the previous step, remember it starts with &lt;code&gt;ey&lt;/code&gt;, for a configured cluster, see the screenshot below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/cabin1-thumb.jpg&#34; alt=&#34;Cabin Setup&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Cabin is pretty cool, you can exec into containers and view logs and almost do anything with your Kube Cluster.  I would love to see the SkipppBox guys open source this&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/cabin2-thumb.jpg&#34; alt=&#34;Cabin Overview&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/cabin3-thumb.jpg&#34; alt=&#34;Cabin Pods&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Thats it, you are configured to connect to your Kubernetes cluster on the IBM Bluemix Containers Service.  Please leave any comments or feedback below.  If you are a Windows user I would love some comments on the steps to get this working :).&lt;/p&gt;
+
+&lt;h2 id=&#34;known-issues&#34;&gt;Known Issues&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Tiller seems busted which deploys apps into the cluster.  For more info check out &lt;a href=&#34;https://github.com/skippbox/cabin-issues/issues/24&#34;&gt;this GitHub issue&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;feedback&#34;&gt;Feedback&lt;/h2&gt;
+
+&lt;p&gt;Please reach out to us on Slack at &lt;a href=&#34;https://ibm-container-service.slack.com&#34;&gt;https://ibm-container-service.slack.com&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

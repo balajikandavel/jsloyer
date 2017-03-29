@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ssl on JeffSloyer.io</title>
+    <link>http://www.jeffsloyer.io/tags/ssl/index.xml</link>
+    <description>Recent content in Ssl on JeffSloyer.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Code released under the Apache 2.0 license.</copyright>
+    <atom:link href="http://www.jeffsloyer.io/tags/ssl/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Inbound Ssl in Bluemix</title>
+      <link>http://www.jeffsloyer.io/post/inbound-ssl-in-bluemix/</link>
+      <pubDate>Mon, 18 Aug 2014 13:24:00 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/inbound-ssl-in-bluemix/</guid>
+      <description>&lt;p&gt;Did you know in Bluemix you get inbound SSL for free?  It is automatically turned on and enabled for every app.  All you have to do is just access your app over https instead of http.&lt;/p&gt;
+
+&lt;p&gt;Developers don’t need to implement SSL in their app, you just need to support HTTP and the Bluemix infrastructure will support HTTPS for you and do SSL offloading.&lt;/p&gt;
+
+&lt;p&gt;Additionally Bluemix supports the &lt;code&gt;x-forwarded-proto&lt;/code&gt; header to allow developers to check with protocol requests are coming in over.  I have pasted some example Node.JS middleware that you can check if the request is coming in over https or not.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var middleware = module.exports,
+    url = require(&amp;quot;url&amp;quot;);
+
+var HTTP = &amp;quot;http:&amp;quot;,
+    HTTPS = &amp;quot;https:&amp;quot;;
+
+middleware.transportSecurity = function () {
+
+    var applicationURL = config().appURL(),
+        scheme = url.parse(applicationURL).protocol;
+
+    function securityEnabled () {
+        if (scheme !== HTTP &amp;amp;amp;&amp;amp;amp; scheme !== HTTPS) {
+            throw new Error(
+                &amp;quot;The application URL scheme must be &#39;http&#39; or &#39;https&#39;.&amp;quot;
+            );
+        }
+        return scheme === HTTPS;
+    }
+
+    function redirectURL (request) {
+        return url.resolve(applicationURL, request.originalUrl);
+    }
+
+    if (securityEnabled()) {
+        console.log(&amp;quot;Transport security is enabled.&amp;quot;);
+    }
+
+    return function (request, response, next) {
+        // handling non-standard proxy headers ibm cf uses
+        if(request.headers.protocol) {
+            request.headers[&amp;quot;x-forwarded-proto&amp;quot;] = request.headers.protocol;
+        } else
+        if(request.headers.$wssc) {
+            // The $wssc header is something that WebSphere inserts to pass the
+            // proxied protocol to downstream applications
+            request.headers[&amp;quot;x-forwarded-proto&amp;quot;] = request.headers.$wssc;
+        }
+
+        if (securityEnabled() &amp;amp;amp;&amp;amp;amp; !request.secure) {
+            log.info(&amp;quot;Redirecting insecure request for&amp;quot;, request.originalUrl);
+            response.redirect(301, redirectURL(request));
+        }
+        else {
+            next();
+        }
+    };
+
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;...
+var middleware = require(&amp;quot;./middleware&amp;quot;);
+...
+app.use(middleware.transportSecurity());
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For more information check out &lt;a href=&#34;https://www.ng.bluemix.net/docs/manageapps/secapps.html&#34;&gt;the Bluemix SSL docs&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

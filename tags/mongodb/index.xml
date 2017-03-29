@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mongodb on JeffSloyer.io</title>
+    <link>http://www.jeffsloyer.io/tags/mongodb/index.xml</link>
+    <description>Recent content in Mongodb on JeffSloyer.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Code released under the Apache 2.0 license.</copyright>
+    <atom:link href="http://www.jeffsloyer.io/tags/mongodb/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>(Video) - Deploying your Meteor app to Cloud Foundry and Bluemix</title>
+      <link>http://www.jeffsloyer.io/post/video-deploying-your-meteor-app-to-cloud-foundry-and-bluemix/</link>
+      <pubDate>Mon, 24 Aug 2015 11:03:35 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/video-deploying-your-meteor-app-to-cloud-foundry-and-bluemix/</guid>
+      <description>&lt;p&gt;This is a follow up post to a previous post on &lt;a href=&#34;http://www.jeffsloyer.io/post/deploying-your-meteor-app-to-cloud-foundry-and-bluemix/&#34;&gt;Deploying your Meteor app to Cloud Foundry and Bluemix.&lt;/a&gt;  In this post we went through how to deploy a Meteor app to Cloud Foundry and Bluemix.  In this post we will be going through the same thing except in a video format.  Check out the video below.&lt;/p&gt;
+
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/dyVmB8vHFaE&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;I would love to hear your feedback and any suggestions you have, please reach out to me on Twitter &lt;a href=&#34;https://twitter.com/jsloyer target=&#34;&gt;@jsloyer&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Deploying your Meteor app to Cloud Foundry and Bluemix</title>
+      <link>http://www.jeffsloyer.io/post/deploying-your-meteor-app-to-cloud-foundry-and-bluemix/</link>
+      <pubDate>Wed, 05 Aug 2015 11:03:35 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/deploying-your-meteor-app-to-cloud-foundry-and-bluemix/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/07/meteor-logo-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/07/meteor-logo-medium.png&#34; alt=&#34;meteor-logo&#34; /&gt;&lt;/a&gt;Meteor is a pretty powerful and cool framework for developing modern webapps all in Javascript.  It provides some really cool things as a modern UI, responsive code that works on a desktop and a mobile device, and some really slick features with websockets with client and server side rendering.&lt;/p&gt;
+
+&lt;p&gt;I heard about Meteor mid-2014 but it peaked my interest last week when I was at a customer and a developer at the customer was building a Meteor app and they were asking how to run it on Bluemix.  Of course doing my job I helped the developer get the app running but it took a couple tweaks to the Cloud Foundry buildpack for Meteor.&lt;!-- more --&gt;&lt;/p&gt;
+
+&lt;p&gt;You might be asking what a buildpack is, that&amp;rsquo;s totally fine.  In Cloud Foundry you can use basically any language you want for your app, all you need is some code to laydown the app server or middleware and compile your code together and install dependencies.  For Meteor there is a buildpack available but it was slighly out of date.&lt;/p&gt;
+
+&lt;p&gt;Last week and this week I committed some changes to the buildpack to make it more robust and compatible for newer Meteor apps.&lt;/p&gt;
+
+&lt;p&gt;The buildpack now will allow you to use your existing Meteor app and push it to Cloud Foundry and Bluemix.&lt;/p&gt;
+
+&lt;p&gt;For the rest of this blog post I am going to walk through on how to build an example Meteor app and push it to Bluemix.&lt;/p&gt;
+
+&lt;h2 id=&#34;pre-req-s&#34;&gt;Pre-req&amp;rsquo;s&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Sign up for a &lt;a href=&#34;http://bluemix.net/?cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-MeteorSample-_-Node-MongoLab-_-BM-DevAd&#34;&gt;Bluemix&lt;/a&gt; account.  Go &lt;a href=&#34;http://bluemix.net/?cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-MeteorSample-_-Node-MongoLab-_-BM-DevAd&#34;&gt;Bluemix&lt;/a&gt; and click on Sign-up in the top right hand corner.&lt;/li&gt;
+&lt;li&gt;Meteor installed locally, go &lt;a href=&#34;https://www.meteor.com/install&#34;&gt;Meteor install&lt;/a&gt; to install Meteor&lt;/li&gt;
+&lt;li&gt;Cloud Foundry Command Line (CLI) installed, go &lt;a href=&#34;https://www.ng.bluemix.net/docs/#starters/install_cli.html&#34;&gt;install CLI&lt;/a&gt; for instructions&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;steps&#34;&gt;Steps&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Create a sample Meteor app, we are going to use the leaderboard example&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;meteor create --example leaderboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Push the sample app to Bluemix. &lt;strong&gt;Note&lt;/strong&gt;, this command will not start the app, we will need to choose our database next. Also replace leaderboard with a unique name for your app, for example leaderboard-jbs (my intials).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf push leaderboard -b https://github.com/cloudfoundry-community/cf-meteor-buildpack.git --no-start
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Next we need to choose if we want to use the built on Mongo DB with Cloud Foundry or an external third party MongoLab. It honestly doesn&amp;rsquo;t matter too much but MongoLab is built for scale is more reliable, I would choose MongoLab myself.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Built in MongoDB:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Create the database.
+    cf create-service mongodb 100 leaderboard-mongodb&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Connect the database to our app. Replace leaderboard with the name of your app (ex. leaderboard-jbs).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf bind-service leaderboard leaderboard-mongodb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;would then become&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf bind-service leaderboard-jbs leaderboard-mongodb
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;MongoLab:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Create the database.
+    cf create-service mongolab sandbox leaderboard-mongolab&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Connect the database to our app. Replace leaderboard with the name of your app (ex. leaderboard-jbs).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf bind-service leaderboard leaderboard-mongolab
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;would then become&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    cf bind-service leaderboard-jbs leaderboard-mongolab
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Start the application. Replace leaderboard with the name of your app&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf start leaderboard
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Open up two web browsers and goto the same url, for me my URL would be &lt;a href=&#34;http://leaderboard-jbs.mybluemix.net&#34;&gt;http://leaderboard-jbs.mybluemix.net&lt;/a&gt;.  I got this url by putting the name of my app in front of mybluemix.net.&lt;/p&gt;
+
+&lt;p&gt;In the video below you can see when you choose a player and then click add 5 points the other browser is updated instantly.  The example app is saving this information in the Mongo database then using websockets to notify all the connected clients of the change.  This is one of the really powerful features of Meteor.&lt;/p&gt;
+
+&lt;p&gt;The work with the developer at the client last week has renewed my interest in Meteor and will have to dig into it more.&lt;/p&gt;
+
+&lt;p&gt;If you prefer to watch a video of this as well, check out Video – &lt;a href=&#34;http://www.jeffsloyer.io/post/video-deploying-your-meteor-app-to-cloud-foundry-and-bluemix/&#34;&gt;Deploying your Meteor app to Cloud Foundry and Bluemix&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I would love to hear your feedback and any suggestions you have, please reach out to me on Twitter &lt;a href=&#34;https://twitter.com/jsloyer target=&#34;&gt;@jsloyer&lt;/a&gt;.  There will also be a video forth coming as well.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

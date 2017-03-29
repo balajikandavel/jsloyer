@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Twilio on JeffSloyer.io</title>
+    <link>http://www.jeffsloyer.io/tags/twilio/index.xml</link>
+    <description>Recent content in Twilio on JeffSloyer.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Code released under the Apache 2.0 license.</copyright>
+    <atom:link href="http://www.jeffsloyer.io/tags/twilio/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Twitter Personality Comparisons Using Watson</title>
+      <link>http://www.jeffsloyer.io/post/twitter-personality-comparisons-using-watson/</link>
+      <pubDate>Mon, 24 Nov 2014 22:06:16 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/twitter-personality-comparisons-using-watson/</guid>
+      <description>&lt;p&gt;Hey Yall!&lt;/p&gt;
+
+&lt;p&gt;We are back at it again with some demos!!!&lt;/p&gt;
+
+&lt;p&gt;Did you ever wonder if you and your favorite celebrity would be compatible if you met?? I sure do! Or did you ever wonder how you could become a better leader, I sure do. Today you would have to go Google the person and analyze posts and articles about them and be a personality expert to see if you have personality traits in common.&lt;/p&gt;
+
+&lt;p&gt;Gone are those days now!&lt;/p&gt;
+
+&lt;p&gt;Enter &lt;a href=&#34;http://friendme.mybluemix.net/&#34;&gt;FriendMe&lt;/a&gt;!  Your trusted personality comparison using IBM Watson. The answer to the above questions are easy now.  For example,  if I compared myself to the IBM Design Twitter account, I can see my personality is very much alike with the IBM Design team.  Thats good news for me because I never considered myself a designer…
+&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/jeff-and-ibm-design-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/jeff-and-ibm-design-medium.jpg&#34; alt=&#34;jeff and ibm design Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;For the leadership, personal, and professional case, Jerry Cuomo is a very successful leader at IBM. I can see that myself and Jerry share 5 out of the top 5 personality traits in common.  In my career development I can see I need to develop myself more as a transformational leader.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/jeff-and-jerry-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/jeff-and-jerry-medium.jpg&#34; alt=&#34;jeff and jerry Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Lastly, I am going to do one more comparison, between myself and Blake McGregor (a product manager for Bluemix).&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/jeff-and-blake-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/jeff-and-blake-medium.jpg&#34; alt=&#34;jeff and blake Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So let’s jump right into it.&lt;/p&gt;
+
+&lt;p&gt;This app was written in about 6 hours, its built using obviously IBM Bluemix, Node.JS, Angular.JS, Bootstrap, JQuery, IBM Watson, Cloudant, and Twilio.&lt;/p&gt;
+
+&lt;p&gt;If you went to the link above, &lt;a href=&#34;http://friendme.mybluemix.net/&#34;&gt;here it is again&lt;/a&gt;.  You can actually text the app.  If you text the app two Twitter handles it will tell you the compatibility between two people.&lt;/p&gt;
+
+&lt;p&gt;So the source code is available &lt;a href=&#34;https://github.com/IBM-bluemix/friendme&#34;&gt;on Github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;First, we are going to walk through on how to deploy this app and get it working in Bluemix.  Secondly, we are going to walk through how to use the command line to deploy this app as well.&lt;/p&gt;
+
+&lt;p&gt;If you haven’t already sign up for a &lt;a href=&#34;http://bluemix.net/?cm_mmc=developerWorks-_-dWdevcenter-_-bluemix-_-lp&#34;&gt;Bluemix account&lt;/a&gt;.  Once you have done that head over to&lt;a href=&#34;http://jazzhub.com&#34;&gt; jazzhub.com&lt;/a&gt;.  Login there with the username and password you created from your Bluemix account.  If you haven’t logged in yet to jazzhub it will ask you to create an id.  For example if my email is jsmith@co.com, I would create a username of jsmith.&lt;/p&gt;
+
+&lt;p&gt;First, let’s open a web browser and goto &lt;a href=&#34;https://github.com/IBM-bluemix/friendme&#34;&gt;https://github.com/IBM-bluemix/friendme&lt;/a&gt;.  Since we already created an account or logged in jazzhub above we should be logged in.  On the right hand side near the top there should be a big button that says &amp;ldquo;Fork Project&amp;rdquo;.  Let’s click that.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/fork-medium.png&#34;&gt;
+&lt;/a&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/fork-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/fork-medium.png&#34; alt=&#34;fork 300x83 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s go ahead and enter a project name, for example friendme, you can name it anything you want though.  Next place a check mark next to &amp;ldquo;Make it Private&amp;rdquo;, more on this later…  Next make sure an organization and space is shown, it should should your email address as the organization and the space should be dev.  Lastly, click &amp;ldquo;Save&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/fork2-medium.png&#34;&gt;
+&lt;/a&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/fork2-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/fork2-medium.png&#34; alt=&#34;fork2 300x239 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next we need to create the app in Bluemix and setup some services.  So in a new browser window navigate to&lt;a href=&#34;http://bluemix.net/&#34;&gt; http://bluemix.net&lt;/a&gt;.  In the top right click login.&lt;/p&gt;
+
+&lt;p&gt;Once you login click on catalog and find SDK for Node.JS.  Go ahead and click on it.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/node-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/node-medium.png&#34; alt=&#34;node 269x300 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Type in a name for your app, this will also be the URL for your app, remember this as we will need it later…  Then click &amp;ldquo;Create&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;Behind the scenes Bluemix is spinning up a container for our app, setting up SSL, and setting up load balancing. In a traditional IaaS, you would have to do all this manually and it can take hours or days…&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/createapp-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/createapp-medium.png&#34; alt=&#34;createapp 228x300 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next, we need to add some services to our app.  We need Watson and Cloudant.  Let’s do Watson first.  The Watson service that we want is User Modeling.  It will analyze text and determine someone’s personality.  So to do this let’s click &amp;ldquo;Add A Service&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/addservice-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/addservice-medium.png&#34; alt=&#34;addservice 300x76 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s go to the Watson section and click on &amp;ldquo;User Modeling&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/usermodeling-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/usermodeling-medium.png&#34; alt=&#34;usermodeling 300x115 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;It will bring up a dialog asking us to bind the service to our app, on the right hand side, click &amp;ldquo;Create&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/usermodeling2-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/usermodeling2-medium.png&#34; alt=&#34;usermodeling2 224x300 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;It will ask us if we want to restage the app, go ahead and click ok.  What this means is it needs to bind the service to the app and to do this it needs to restart it.&lt;/p&gt;
+
+&lt;p&gt;Next, we need to create a database, to do this let’s click on the Cloudant tile.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantclick-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantclick-medium.png&#34; alt=&#34;cloudantclick 300x221 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Then let’s click on the launch button.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantlaunch-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantlaunch-medium.png&#34; alt=&#34;cloudantlaunch 300x103 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next we need to create a database, click on &amp;ldquo;Add New Database&amp;rdquo; in the top right.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/addnewdb-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/addnewdb-medium.png&#34; alt=&#34;addnewdb 300x48 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Then enter a name for the database, let’s use friendme, if you use something else we will have to edit the code…  Go ahead and click &amp;ldquo;Create&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/db-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/db-medium.png&#34; alt=&#34;db 300x150 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;We can close out of Cloudant now.&lt;/p&gt;
+
+&lt;p&gt;So, since we are making API calls to Twilio and Twitter we need to register for API key’s.&lt;/p&gt;
+
+&lt;p&gt;Let’s do Twitter first, head on over to &lt;a href=&#34;http://apps.twitter.com&#34;&gt;http://apps.twitter.com&lt;/a&gt; and login with your Twitter username and password.&lt;/p&gt;
+
+&lt;p&gt;In the top right let’s click on &amp;ldquo;Create New App&amp;rdquo;.  Type in a name and description for the app, the URL actually doesn’t matter but let’s type in something real.  Remember above the name you created for your app in Bluemix, let’s type that in.  For example &lt;a href=&#34;http://friendme.mybluemix.net&#34;&gt;http://friendme.mybluemix.net&lt;/a&gt;.  Replace friendme with the name of your app.&lt;/p&gt;
+
+&lt;p&gt;Click on the &amp;ldquo;Keys and Access Tokens&amp;rdquo; tab.  Under Access Tokens click &amp;ldquo;Create my access token&amp;rdquo;.  Leave this tab open, we will need these API’s keys in a bit…&lt;/p&gt;
+
+&lt;p&gt;Next we need a Twilio phone number if you would like to be able to text your app.  If you don’t want to be able to text the app skip this section, you can use the UI of the app to interact with it.  Head on over to &lt;a href=&#34;https://www.twilio.com/try-twilio?promo=bluemix&#34;&gt;https://www.twilio.com/try-twilio&lt;/a&gt; and create an account.  If you already have an account go ahead and goto &lt;a href=&#34;https://www.twilio.com/user/account/phone-numbers/incoming&#34;&gt;https://www.twilio.com/user/account/phone-numbers/incoming&lt;/a&gt; or if you just created an account go there as well.&lt;/p&gt;
+
+&lt;p&gt;We need to buy a number, to do this click on &amp;ldquo;Buy Number&amp;rdquo; in the top right.  Make sure the number has texting capabilities.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/twilio-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/twilio-medium.png&#34; alt=&#34;twilio 300x137 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Try to find one of the cheaper ones, the cheapest you can find is $1/month, not bad…&lt;/p&gt;
+
+&lt;p&gt;So once we buy the number we will need our API key’s.  They can be found at &lt;a href=&#34;https://www.twilio.com/user/account/settings&#34;&gt;https://www.twilio.com/user/account/settings&lt;/a&gt;.  Leave this tab open like we did for Twitter, we will come back to this…&lt;/p&gt;
+
+&lt;p&gt;Ok so finally time to deploy our app.  To do this switch back to Jazzhub, click the &amp;ldquo;Build &amp;amp; Deploy&amp;rdquo; button in the top right.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/buildanddeploy-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/buildanddeploy-medium.png&#34; alt=&#34;buildanddeploy 300x53 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Go ahead and click on &amp;ldquo;Advanced&amp;rdquo; to turn on deployments.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/advanced-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/advanced-medium.png&#34; alt=&#34;advanced 300x54 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Click on &amp;ldquo;add a builder&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/addabuilder-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/addabuilder-medium.png&#34; alt=&#34;addabuilder 300x293 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;For builder type choose &amp;ldquo;Shell Script&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;For the build script text area enter the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+echo &amp;quot;do nothing&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Since it is node we really don’t need a build here…  If this wasn’t a demo and real app we would probably run some unit tests and do some linting here…&lt;/p&gt;
+
+&lt;p&gt;Click on Save.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/builderdone-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/builderdone-medium.png&#34; alt=&#34;builderdone 300x228 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next we need to set up the deployment.  Click on &amp;ldquo;add a stage&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/addstage-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/addstage-medium.png&#34; alt=&#34;addstage 300x242 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Make sure the app name matches the app name we created in Bluemix.&lt;/p&gt;
+
+&lt;p&gt;Last thing we need to do is modify the build script.  This is the only really confusing bit, you need to make sure you set this up correct or the app won’t work…&lt;/p&gt;
+
+&lt;p&gt;When you first click on &amp;ldquo;add a stage&amp;rdquo; it will look like the following&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/deploybefore-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/deploybefore-medium.png&#34; alt=&#34;deploybefore 300x239 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The script will look like the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf push &amp;quot;${CF_APP}&amp;quot; -n &amp;quot;${CF_APP}-${CF_SPACE}&amp;quot;
+
+# View logs
+EXIT_CODE=$?
+if [ $EXIT_CODE -ne 0 ]
+then
+    cf logs &amp;quot;${CF_APP}&amp;quot; --recent
+    exit $EXIT_CODE
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We will need to update it to the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf set-env &amp;quot;${CF_APP}&amp;quot; TWILIO_PHONENUMBER &amp;quot;replaceme&amp;quot;
+cf set-env &amp;quot;${CF_APP}&amp;quot; TWILIO_SID &amp;quot;replaceme&amp;quot;
+cf set-env &amp;quot;${CF_APP}&amp;quot; TWILIO_TOKEN &amp;quot;replaceme&amp;quot;
+cf set-env &amp;quot;${CF_APP}&amp;quot; TWITTER_ACCESSTOKEN_KEY &amp;quot;replaceme&amp;quot;
+cf set-env &amp;quot;${CF_APP}&amp;quot; TWITTER_ACCESSTOKEN_SECRET &amp;quot;replaceme&amp;quot;
+cf set-env &amp;quot;${CF_APP}&amp;quot; TWITTER_CONSUMER_KEY &amp;quot;replaceme&amp;quot;
+cf set-env &amp;quot;${CF_APP}&amp;quot; TWITTER_CONSUMER_SECRET &amp;quot;replaceme&amp;quot;
+
+cf push &amp;quot;${CF_APP}&amp;quot; -c &amp;quot;node lib/app.js&amp;quot;
+
+# View logs
+EXIT_CODE=$?
+if [ $EXIT_CODE -ne 0 ]
+then
+    cf logs &amp;quot;${CF_APP}&amp;quot; --recent
+    exit $EXIT_CODE
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For each of these values we need to substitute in the the correct values from the tab’s we kept open earlier from Twitter and Twilio.&lt;/p&gt;
+
+&lt;p&gt;If you remember earlier we made the project private, this was to prevent other people from seeing our secret access key’s.  DevOps Service will be rolling out a new over the coming weeks where you can find information for a public project.&lt;/p&gt;
+
+&lt;p&gt;Once you replace the values go ahead and click &amp;ldquo;Save&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;Last thing to do is click &amp;ldquo;Request Build&amp;rdquo;.  That should successfully complete and that will trigger a deployment of your app.&lt;/p&gt;
+
+&lt;p&gt;You can see the deployment is being performed by the following screen shot.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/buildrunning-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/buildrunning-medium.png&#34; alt=&#34;buildrunning 300x195 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Once the deployment finishes you can click the link (name of your app) to your app to use it!&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/done-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/done-medium.png&#34; alt=&#34;done 300x207 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Please reach out to me on Twitter (&lt;a href=&#34;http://twitter.com/jsloyer&#34;&gt;@jsloyer&lt;/a&gt;) if you have any issues or post a comment below.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

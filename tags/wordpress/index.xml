@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wordpress on JeffSloyer.io</title>
+    <link>http://www.jeffsloyer.io/tags/wordpress/index.xml</link>
+    <description>Recent content in Wordpress on JeffSloyer.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Code released under the Apache 2.0 license.</copyright>
+    <atom:link href="http://www.jeffsloyer.io/tags/wordpress/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Why I Chose Hugo over Wordpress - Part 2</title>
+      <link>http://www.jeffsloyer.io/post/why-i-chose-hugo-over-wordpress-part2/</link>
+      <pubDate>Sun, 18 Dec 2016 14:11:14 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/why-i-chose-hugo-over-wordpress-part2/</guid>
+      <description>
+
+&lt;p&gt;This post has been a long time going and much overdue, it has almost been 12 months
+since publishing the follow up to my previous post &lt;a href=&#34;http://www.jeffsloyer.io/post/why-i-chose-hugo-over-wordpress/&#34;&gt;Why I Chose Hugo Over Wordpress.&lt;/a&gt;  But I am finally going to take the time and explain all the technical parts about how I made this blog work with Hugo.&lt;/p&gt;
+
+&lt;h2 id=&#34;setting-up-the-site&#34;&gt;Setting up the site&lt;/h2&gt;
+
+&lt;p&gt;First to get started you need to install Hugo.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;brew update &amp;amp;&amp;amp; brew install hugo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next you need to create a basic Hugo site.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo new site jsloyer
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With Hugo you you can use themes, I am using a modified version of &lt;a href=&#34;https://github.com/humboldtux/startbootstrap-clean-blog&#34;&gt;StartBootstrap Clean Blog&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I embedded the theme into my &lt;a href=&#34;https://github.com/jsloyer/jsloyer/tree/master/themes/startbootstrap-clean-blog&#34;&gt;GitHub project&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Once you embed the theme you need to tell Hugo to use the theme.&lt;/p&gt;
+
+&lt;p&gt;You do this in &lt;a href=&#34;https://github.com/jsloyer/jsloyer/blob/master/config.toml#L6&#34;&gt;config.toml&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;theme = &amp;quot;startbootstrap-clean-blog&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Speaking of git you need to setup a GitHub project, the name is really important&amp;hellip; If you are publishing the Hugo site under your own GitHub org, ie your username, the git project needs to match that.  For me my GitHub username is &lt;code&gt;jsloyer&lt;/code&gt; so my git project name is &lt;code&gt;jsloyer&lt;/code&gt; as well.  The reason for this is how GitHub pages works in picking up the build and publishing for a GitHub pages site.&lt;/p&gt;
+
+&lt;p&gt;You will be doing all of your work on the &lt;code&gt;master&lt;/code&gt; branch.  Think of the &lt;code&gt;master&lt;/code&gt; branch as you would with any of piece of software, the &lt;code&gt;master&lt;/code&gt; branch is the raw code, in this case just markdown.  There is another special magic branch called &lt;code&gt;gh-pages&lt;/code&gt; that we will go through later that makes your repo into a GitHub pages site.&lt;/p&gt;
+
+&lt;h3 id=&#34;creating-a-post&#34;&gt;Creating a post&lt;/h3&gt;
+
+&lt;p&gt;So next we need to create our first post!  To do this its pretty simple&amp;hellip;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo new post/good-to-great.md
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next I start up Hugo to see how the site will look.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;hugo server --buildDrafts
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This starts Hugo in dev mode where you can see a post while you are working on it.  The beauty is you can even check the unfinished post into git but until you flip the magic &lt;code&gt;draft&lt;/code&gt; setting on a post it won&amp;rsquo;t be live on the Internet.&lt;/p&gt;
+
+&lt;p&gt;As you make changes to your post and save it Hugo will automatically reload in the browser what the post will look like.&lt;/p&gt;
+
+&lt;p&gt;Before we jump into how to take a post live lets look at some of the metadata in the post&amp;hellip;  Here is some metadata for a &lt;a href=&#34;http://www.jeffsloyer.io/post/why-i-chose-hugo-over-wordpress/&#34;&gt;previous post of mine.&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;+++
+categories = [&amp;quot;Other&amp;quot;]
+date = &amp;quot;2016-01-08T14:11:14-05:00&amp;quot;
+description = &amp;quot;&amp;quot;
+draft = false
+image = &amp;quot;/original-images/migrate.jpg&amp;quot;
+tags = [&amp;quot;wordpress&amp;quot;, &amp;quot;migrate&amp;quot;]
+title = &amp;quot;Why I Chose Hugo over Wordpress&amp;quot;
+
++++
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can set some various pieces of information for a post.  For my paricular theme each post has a Jumbotron image, that is set via the &lt;code&gt;image&lt;/code&gt; attribute.  More on images later&amp;hellip;  You can also set tags as well as the title of the post.  The most interesting bit here is the &lt;code&gt;draft = false&lt;/code&gt; line.  This is what I was referring to above in controlling when a post gets published.  Once you feel like your post is ready just change it to &lt;code&gt;draft = true&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;publishing&#34;&gt;Publishing&lt;/h3&gt;
+
+&lt;p&gt;The next step is publishing your post, once you set the &lt;code&gt;draft = true&lt;/code&gt; for a post you need to check this file into Git.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git add .
+git commit -m &amp;quot;my awesome post&amp;quot;
+git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At this point you think you might be done but you aren&amp;rsquo;t you need to setup GitHub Pages and a pipeline&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;I chose &lt;a href=&#34;http://wercker.com&#34;&gt;Wercker&lt;/a&gt; as my CI engine for this.  It was incredibly easy to setup a pipeline to build the site as well as deploy the site back to GitHub.&lt;/p&gt;
+
+&lt;p&gt;Before we get into the pipeline we need to setup the git project as a GitHub pages site.&lt;/p&gt;
+
+&lt;p&gt;Goto the settings page for your project, for me its &lt;code&gt;https://github.com/jsloyer/jsloyer/settings&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Scroll down to the bottom&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;Click &amp;ldquo;Launch automatic page generator&amp;rdquo;, see below.  Go through the wizard, it really doesn&amp;rsquo;t matter what you choose here, you are going to replace the content anyways&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/gh-pages-generation-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/gh-pages-generation-medium.jpg&#34; alt=&#34;automatic page generator&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Once you have this setup it might take a little bit but your site will be available.  For example my site without the custom domain name is &lt;code&gt;http://jsloyer.github.io/jsloyer&lt;/code&gt;.  Replace your GitHub username with mine and you will be able to access the default site.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt;  If you want to use a custom domain name I&amp;rsquo;ll include the instructions below, for example my site is hosted on &lt;code&gt;www.jeffsloyer.io&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;automatic-pipeline-publishing&#34;&gt;Automatic Pipeline/Publishing&lt;/h3&gt;
+
+&lt;p&gt;The next step is to to get automatic publishing setup.  So what happens for me is when I check in a new commit to the master branch, Wercker builds my images and builds the site and publishes it back to the &lt;code&gt;gh-pages&lt;/code&gt; branch automatically.&lt;/p&gt;
+
+&lt;p&gt;To do this you need a file called &lt;code&gt;werkcer.yml&lt;/code&gt; in your project.  Below is a copy of mine.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;box: nodesource/node
+build:
+  steps:
+    - install-packages:
+        packages: graphicsmagick
+    - npm-install
+    - grunt:
+        tasks: processimages
+    - arjen/hugo-build:
+        version: &amp;quot;0.14&amp;quot;
+        theme: startbootstrap-clean-blog
+deploy:
+  steps:
+    - install-packages:
+        packages: git ssh-client
+    - lukevivier/gh-pages@0.2.1:
+        token: $GIT_TOKEN
+        domain: www.jeffsloyer.io
+        basedir: public
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above yaml file will build my Hugo site for me as well as build my images in an optimized format as well.  The only bit you need to change is if you want to use a specific theme, if you don&amp;rsquo;t want to use the one that I am using change the following to the values you need.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;theme: startbootstrap-clean-blog
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take a bit and talk through my automatic image minimization and rendering.  During build time my images are compressed and minimized to different sizes.  I only check in high quality original images and the build process optimizes them for me.  To do that you need two files.  They are below.  I am not going to go through how it works but basically all you have to do is run &lt;code&gt;grunt processimages&lt;/code&gt; and the tasks will optimize your images&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;package.json&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+  &amp;quot;name&amp;quot;: &amp;quot;blog&amp;quot;,
+  &amp;quot;version&amp;quot;: &amp;quot;0.0.1&amp;quot;,
+  &amp;quot;repository&amp;quot;: {
+    &amp;quot;type&amp;quot;: &amp;quot;git&amp;quot;,
+    &amp;quot;url&amp;quot;: &amp;quot;https://github.com/jsloyer/jsloyer.git&amp;quot;
+  },
+  &amp;quot;author&amp;quot;: &amp;quot;Jeff Sloyer&amp;quot;,
+  &amp;quot;dependencies&amp;quot;: {
+    &amp;quot;glob&amp;quot;: &amp;quot;*&amp;quot;,
+    &amp;quot;grunt&amp;quot;: &amp;quot;*&amp;quot;,
+    &amp;quot;grunt-cli&amp;quot;: &amp;quot;*&amp;quot;,
+    &amp;quot;grunt-contrib-concat&amp;quot;: &amp;quot;*&amp;quot;,
+    &amp;quot;grunt-contrib-connect&amp;quot;: &amp;quot;*&amp;quot;,
+    &amp;quot;grunt-contrib-copy&amp;quot;: &amp;quot;*&amp;quot;,
+    &amp;quot;grunt-contrib-jshint&amp;quot;: &amp;quot;*&amp;quot;,
+    &amp;quot;grunt-contrib-sass&amp;quot;: &amp;quot;*&amp;quot;,
+    &amp;quot;grunt-contrib-uglify&amp;quot;: &amp;quot;*&amp;quot;,
+    &amp;quot;grunt-contrib-watch&amp;quot;: &amp;quot;*&amp;quot;,
+    &amp;quot;grunt-jekyll&amp;quot;: &amp;quot;*&amp;quot;,
+    &amp;quot;grunt-responsive-images&amp;quot;: &amp;quot;^0.1.7&amp;quot;,
+    &amp;quot;grunt-shell&amp;quot;: &amp;quot;*&amp;quot;,
+    &amp;quot;image-size&amp;quot;: &amp;quot;*&amp;quot;,
+    &amp;quot;yamljs&amp;quot;: &amp;quot;*&amp;quot;
+  }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Gruntfile.js&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var grunt = require(&#39;grunt&#39;),
+    fs = require(&#39;fs&#39;),
+    glob = require(&#39;glob&#39;),
+    sizeOf = require(&#39;image-size&#39;),
+    YAML = require(&#39;yamljs&#39;);
+
+grunt.loadNpmTasks(&#39;grunt-contrib-concat&#39;);
+grunt.loadNpmTasks(&#39;grunt-contrib-connect&#39;);
+grunt.loadNpmTasks(&#39;grunt-contrib-copy&#39;);
+grunt.loadNpmTasks(&#39;grunt-contrib-jshint&#39;);
+grunt.loadNpmTasks(&#39;grunt-contrib-sass&#39;);
+grunt.loadNpmTasks(&#39;grunt-contrib-uglify&#39;);
+grunt.loadNpmTasks(&#39;grunt-contrib-watch&#39;);
+grunt.loadNpmTasks(&#39;grunt-responsive-images&#39;);
+grunt.loadNpmTasks(&#39;grunt-jekyll&#39;);
+grunt.loadNpmTasks(&#39;grunt-shell&#39;);
+
+grunt.initConfig({
+
+    responsive_images: {
+        myTask: {
+          options: {
+            sizes: [{
+              name: &#39;thumb&#39;,
+              width: 400
+            },{
+              name: &#39;medium&#39;,
+              width: 800
+            },{
+              name: &amp;quot;large&amp;quot;,
+              width: 1200
+            }]
+          },
+          files: [{
+            expand: true,
+            src: [&#39;**/*.{jpg,gif,png,jpeg}&#39;],
+            cwd: &#39;static/original-images&#39;,
+            dest: &#39;static/images&#39;
+          }]
+        }
+    }
+});
+
+grunt.registerTask(&#39;resize&#39;, [&amp;quot;responsive_images&amp;quot;]);
+grunt.registerTask(&#39;imageinfo&#39;, function(){
+    var done = this.async();
+    glob(&#39;static/images/**/*.{jpg,gif,png}&#39;, {}, function(err, files){
+        var existingYml = fs.readFileSync(&amp;quot;static/images.yml&amp;quot;).toString();
+        var a = existingYml.split(&amp;quot;#!#!#!#!#&amp;quot;);
+        existingYml = a[0].trim();
+
+        var data = {};
+        files.forEach(function(file){
+            var dimensions = sizeOf(file);
+            var image = {
+                width: dimensions.width,
+                height: dimensions.height,
+                aspect: dimensions.width / dimensions.height
+            }
+            data[file] = image;
+        })
+
+        var yamlString = YAML.stringify(data);
+        var yamlHeading = &amp;quot;\n\n\n#!#!#!#!# Do not edit below this line.\n&amp;quot;;
+        yamlHeading += &amp;quot;# Generated automatically using `grunt imageinfo`\n\n&amp;quot;;
+
+        fs.writeFileSync(&amp;quot;static/images.yml&amp;quot;, existingYml + yamlHeading + yamlString);
+        console.log(&#39;done&#39;);
+        done();
+    });
+
+});
+grunt.registerTask(&#39;processimages&#39;, [&#39;resize&#39;, &#39;imageinfo&#39;]);
+
+grunt.registerTask(&#39;default&#39;, [&#39;processimages&#39;]);
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Check in the above files to GitHub, the files are the following.
+- &lt;code&gt;wercker.yml&lt;/code&gt;
+- &lt;code&gt;Gruntfile.js&lt;/code&gt;
+- &lt;code&gt;package.json&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The next step is getting a token from GitHub.  To generate a token goto &lt;a href=&#34;https://github.com/settings/tokens&#34;&gt;https://github.com/settings/tokens&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;You will want a token with the following permissions.  &lt;strong&gt;Note once you generate the token copy it because GitHub won&amp;rsquo;t display it to you again&amp;hellip;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/GitHub-token-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/GitHub-token-medium.jpg&#34; alt=&#34;GitHub token&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next we need to goto &lt;a href=&#34;https://wercker.com&#34;&gt;Wercker&lt;/a&gt; and login with our GitHub credentials.  Once you have logged in click &amp;ldquo;Create&amp;rdquo; at the top and choose application or just click &lt;a href=&#34;https://app.wercker.com/applications/create&#34;&gt;here&lt;/a&gt;.  You will need to choose your your repo and I chose to make my pipeline private, it is up to you.  Once you have finished that you need enter in yout Gitub token so Wercker and deploy your built Hugo site back to GitHub.&lt;/p&gt;
+
+&lt;p&gt;Next we need to edit the pipeline to deploy to GitHub.  To do this click on the workflows tab.  For example my link is &lt;a href=&#34;https://app.wercker.com/jsloyer/jsloyer/workflows&#34;&gt;https://app.wercker.com/jsloyer/jsloyer/workflows&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Under pipeline there should already be one called &lt;code&gt;build&lt;/code&gt;.  Click on &lt;code&gt;build&lt;/code&gt;.  Scroll down to &amp;ldquo;Ignore Branches&amp;rdquo;, type in &lt;code&gt;gh-pages&lt;/code&gt;.  We are ignoring the &lt;code&gt;gh-pages&lt;/code&gt; branch as we don&amp;rsquo;t ever want to build that, we just build master.  Click &amp;ldquo;Update&amp;rdquo;.  Go back in your browser.  We need to add another pipeline called &lt;code&gt;GitHubPages&lt;/code&gt;.  We need to set an environment variable called &lt;code&gt;GIT_TOKEN&lt;/code&gt;, paste in your GitHub token from earlier, click &amp;ldquo;Protected&amp;rdquo;.  Don&amp;rsquo;t worry Wercker won&amp;rsquo;t expose this to the public.  For the name enter in &lt;code&gt;GitHubPages&lt;/code&gt;.  For &amp;ldquo;YML Pipeline name&amp;rdquo; enter in &lt;code&gt;deploy&lt;/code&gt;.  Save this and you are now finished.&lt;/p&gt;
+
+&lt;p&gt;To trigger a build check in a file into the master branch, the pipeline should execute and deploy your site back to GitHub Pages.  If it doesn&amp;rsquo;t post a comment below and I will help you through it.&lt;/p&gt;
+
+&lt;h3 id=&#34;advanced-stuff&#34;&gt;Advanced Stuff&lt;/h3&gt;
+
+&lt;p&gt;Below I am going to go through some advanced stuff that you probably want&amp;hellip;&lt;/p&gt;
+
+&lt;h4 id=&#34;custom-domain-name&#34;&gt;Custom Domain Name&lt;/h4&gt;
+
+&lt;p&gt;For my site my site is available at &lt;code&gt;www.jeffsloyer.io&lt;/code&gt;.  To do this you need to have the domain name in your &lt;code&gt;config.toml&lt;/code&gt;, mine is &lt;a href=&#34;https://github.com/jsloyer/jsloyer/blob/master/config.toml#L1&#34;&gt;available here&lt;/a&gt;.  Additionally you need your domain name in your &lt;code&gt;wercker.yml&lt;/code&gt; as well, mine is posted above.&lt;/p&gt;
+
+&lt;p&gt;Lastly you need a CNAME entry with your registrar to point to GitHub.  For more information go &lt;a href=&#34;https://help.github.com/articles/setting-up-a-www-subdomain/&#34;&gt;here&lt;/a&gt;.  The CNAME record should point to &lt;code&gt;your-username.GitHub.io&lt;/code&gt;.  For example my site &lt;code&gt;www.jeffsloyer.io&lt;/code&gt; has a CNAME record that points to &lt;code&gt;jsloyer.GitHub.io&lt;/code&gt;.  It migh take a bit for DNS to update, depends on how long of a TTL you have&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;Follow the instructions &lt;a href=&#34;https://help.github.com/articles/adding-or-removing-a-custom-domain-for-your-GitHub-pages-site/&#34;&gt;here&lt;/a&gt; to add the domain name to the GitHub project as well.&lt;/p&gt;
+
+&lt;h3 id=&#34;add-ons&#34;&gt;Add-ons&lt;/h3&gt;
+
+&lt;p&gt;Hugo has a lot of addons, some are even built right in.  For example Google Analytics and Disqus.&lt;/p&gt;
+
+&lt;p&gt;To Google Analytics I just had to add one line to &lt;code&gt;config.toml&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Ganalytics = &amp;quot;UA-xxxx-xxx&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To add Disqus integration I just had to also add one line to &lt;code&gt;config.toml&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;disqusShortname = &amp;quot;xxxx&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Pretty simple&amp;hellip;  For a full list of add-ons goto &lt;code&gt;https://gohugo.io/extras&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Also please follow me on Twitter at &lt;a href=&#34;http://twitter.com/jsloyer&#34;&gt;@jsloyer&lt;/a&gt; and follow me on &lt;a href=&#34;https://www.youtube.com/channel/UCQb6E0NWy6kVglreLNigxng&#34;&gt;Youtube&lt;/a&gt;!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Why I Chose Hugo over Wordpress</title>
+      <link>http://www.jeffsloyer.io/post/why-i-chose-hugo-over-wordpress/</link>
+      <pubDate>Fri, 08 Jan 2016 14:11:14 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/why-i-chose-hugo-over-wordpress/</guid>
+      <description>
+
+&lt;p&gt;I am finally back with my blog, sorry it has been quite awhile.  I just recently finished a migration of my blog my running on Wordpress, which was hosted on &lt;a href=&#34;http://wpengine.com&#34;&gt;WPEngine&lt;/a&gt; and is a really awesome service, to Github pages.  I got tired of using Wordpress and WPEngine cost me about $30/month&amp;hellip;  So I decided to migrate the site to Github pages where I can run the site for free.&lt;/p&gt;
+
+&lt;h2 id=&#34;wordpress-vs-jekyll&#34;&gt;Wordpress vs. Jekyll&lt;/h2&gt;
+
+&lt;p&gt;So let&amp;rsquo;s back up a bit and talk about why I first went with Wordpress.  It mostly came down to speed of getting my site up.  I took the easy way out, I didn&amp;rsquo;t want have to deal with managing a VM and maintaing Wordpress so spent a decent amount of time reading about different hosting providers for Wordpress.  WPEngine consistently rose to the top mainly for its use of use and speed.  At this point I was also dabbling with Github pages but was using Jekyll and didn&amp;rsquo;t have much luck with it.  When I was looking at using Jekyll it was being re-written, there was a version with a bunch of Ruby Gems and then a new version.  The Ruby Gems version had way more plugins and flexibility but the new version was much simplier to get up and running.  I honestly gave it a good try, I spent a couple hours trying to get things working and I couldn&amp;rsquo;t.  I am someone who usually never gives up on something, by gosh I&amp;rsquo;ll get that squre to fit into a circle&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/circle-into-square-thumb.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/circle-into-square-thumb.png&#34; alt=&#34;square into a cirlc&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;But this time, I had to throw up the white flag&amp;hellip;  I just couldn&amp;rsquo;t deal with Jekyll anymore, this is when I decided to jump in feet first with WPEngine.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/white-flag-thumb.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/white-flag-thumb.jpg&#34; alt=&#34;white flag&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;life-with-wpengine&#34;&gt;Life with WPEngine&lt;/h2&gt;
+
+&lt;p&gt;Life was good with WPEngine.  It was really easy to crank out a bunch of blog posts, I mean Wordpress has a great &lt;a href=&#34;https://en.wikipedia.org/wiki/WYSIWYG&#34;&gt;WYSIWYG editor&lt;/a&gt;.  I eventually got my site up and running an launched the site!&lt;/p&gt;
+
+&lt;p&gt;I then realized I needed to optimize the site for speed and SEO.  My first task was enabling SSL.  This was incredibly easy with WPEngine, just pay them $53 bucks for a year and you get an SSL cert, that was easy&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/easy-thumb.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/easy-thumb.jpg&#34; alt=&#34;easy&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;My next order of business was increasing the speed of Wordpress, WPEngine already does a lot and their infrastructure is top notch but Wordpress needs some help to speed itself up.  I followed some stepson speeding up Wordpress, most of it involved caching, minifying, and uglfying assets.&lt;/p&gt;
+
+&lt;p&gt;Life was pretty good at this point but as the site continued to grow it became slower and slower&amp;hellip;&lt;/p&gt;
+
+&lt;h2 id=&#34;time-for-a-change&#34;&gt;Time for a change&lt;/h2&gt;
+
+&lt;p&gt;I was talking to a &lt;a href=&#34;https://twitter.com/raymondcamden&#34;&gt;colleague from work, Raymond Camden&lt;/a&gt; about our blogs and he mentioned I should check out Hugo.  Basically I kind of stopped blogging because WPEngine was too easy, plus I needed a Holiday project as well over Christmas.  I started looking into Hugo and could of not been more happy!!!&lt;/p&gt;
+
+&lt;p&gt;Basically Hugo is a static site generator liked Jekyll but way more simplier.  Plus Hugo is written in Go and I have been recently learning Go so I was sold!&lt;/p&gt;
+
+&lt;h2 id=&#34;hugo-vs-wordpress&#34;&gt;Hugo vs. Wordpress&lt;/h2&gt;
+
+&lt;p&gt;So honestly you really can not beat the speed of a static site.  Wordpress no matter what has to query a database for every request and that adds up.  I decided to run my Hugo generated blog on Github Pages for even more speed.  Github fronts themselves with &lt;a href=&#34;http://fastly.com&#34;&gt;Fastly&lt;/a&gt;, which is probably the coolest and most pimp CDN out there.  Its super fast, like no one can beat them on time to first byte.  Fastly uses SSD&amp;rsquo;s in the cache machines so delivering content is blazing fast.  Additionally Fastly has an API to configure your site and basically allows you to do everything programatically, plus they have self on-boarding, a big plus that you don&amp;rsquo;t have to call some sales person&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;I have been using markdown a bit more recently and I felt like this time I was more prepared to jump into markdown.  My Hugo site uses marketdown for the content files then HTML for the theme.  Its really nice that you can keep your content stored in markdown and its agnostic of the presentation layer (the theme).  If you don&amp;rsquo;t want to use markdown thats ok, you can create your content in HTML as well.&lt;/p&gt;
+
+&lt;p&gt;Additionally, with Hugo I am storing my site on &lt;a href=&#34;http://github.com/jsloyer/jsloyer&#34;&gt;Github&lt;/a&gt; and I check in source content and source files such as images.  My build process uses &lt;a href=&#34;http://wercker.com&#34;&gt;Wercker&lt;/a&gt; to build my static site and to generate the correctly sized images for my blog as well.  Plus Wercker auto-deploys my site to Github Pages whenever there is a checkin!&lt;/p&gt;
+
+&lt;h2 id=&#34;migrating-the-site&#34;&gt;Migrating the site&lt;/h2&gt;
+
+&lt;p&gt;In my &lt;a href=&#34;http://www.jeffsloyer.io/post/why-i-chose-hugo-over-wordpress/&#34;&gt;next post&lt;/a&gt; I will go through how I migrated my site from Wordpress to Hugo.  Hope this has been informative and hopefully interesting.  Please leave some comments below!&lt;/p&gt;
+
+&lt;p&gt;Also please follow me on Twitter at &lt;a href=&#34;http://twitter.com/jsloyer&#34;&gt;@jsloyer&lt;/a&gt; and follow me on &lt;a href=&#34;https://www.youtube.com/channel/UCQb6E0NWy6kVglreLNigxng&#34;&gt;Youtube&lt;/a&gt;!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

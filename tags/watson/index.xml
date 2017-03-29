@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Watson on JeffSloyer.io</title>
+    <link>http://www.jeffsloyer.io/tags/watson/index.xml</link>
+    <description>Recent content in Watson on JeffSloyer.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Code released under the Apache 2.0 license.</copyright>
+    <atom:link href="http://www.jeffsloyer.io/tags/watson/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Peering Inside a Criminal’s Mind using IBM Watson</title>
+      <link>http://www.jeffsloyer.io/post/peering-inside-a-criminals-mind-using-ibm-watson/</link>
+      <pubDate>Mon, 24 Aug 2015 11:21:03 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/peering-inside-a-criminals-mind-using-ibm-watson/</guid>
+      <description>&lt;p&gt;With the recent shooting in South Carolina in reminds us that criminal&amp;rsquo;s can and will continue to harm people.  They seem like random acts to most of us but to a criminal the acts make sense to them?  No one can answer this question except the criminal.  To peer inside a criminal&amp;rsquo;s would be next to impossible but what if there existed another way to peer inside their mind&amp;rsquo;s?  This could be used to try to identify patterns or personality traits that exist.  This information could be used to prevent these horrible acts and better humanity.&lt;!-- more --&gt;&lt;/p&gt;
+
+&lt;p&gt;So how would we do this?  I work at IBM so the answer is obviously IBM Watson.  We all have heard of Watson, IBM Watson &lt;a href=&#34;http://blog.ted.com/how-did-supercomputer-watson-beat-jeopardy-champion-ken-jennings-experts-discuss/&#34;&gt;beat Ken Jennings on Jeopardy&lt;/a&gt;.  However there is so much more that Watson can do, &lt;a href=&#34;https://console.ng.bluemix.net/catalog?cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-WatsonCriminalAnalysis-_-Node-WatsonPersonalityInsights-_-BM-DevAd&#34;&gt;check this out&lt;/a&gt; for all the cool things Watson can do.  One of the really cool services that Watson now provides is something called Personality Insights.  This service can analyze the personality of text in meer seconds via a REST API.  One of the things IBM is trying to do now is make all these really cool technologies available to everyone and anyone.  They are doing it through something called &lt;a href=&#34;http://bluemix.net/?cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-WatsonCriminalAnalysis-_-Node-WatsonPersonalityInsights-_-BM-DevAd&#34;&gt;IBM Bluemix&lt;/a&gt;.  &lt;a href=&#34;http://bluemix.net/?cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-WatsonCriminalAnalysis-_-Node-WatsonPersonalityInsights-_-BM-DevAd&#34;&gt;Bluemix&lt;/a&gt; is IBM&amp;rsquo;s platform as a service (PaaS), and it has a whole giant catalog of really cool technologies from IBM as well as lots of other third parties.  You can sign up for a free 30 day account by going &lt;a href=&#34;http://bluemix.net/?cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-WatsonCriminalAnalysis-_-Node-WatsonPersonalityInsights-_-BM-DevAd&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So how does this fit back with peering inside of a criminal.  Well I hope you guessed the answer, we are going to use Personality Insights to analyze the personality of a couple criminal&amp;rsquo;s and look for some common traits.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take the most recent horrible attack, the South Carolina church shooting.  Dylann Roof posted a manifesto online and we are going to use that as the basis to peer into his mind.&lt;/p&gt;
+
+&lt;p&gt;There are two ways to try this out for yourself.  Let&amp;rsquo;s go through both of them.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Sign up a &lt;a href=&#34;http://bluemix.net/?cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-WatsonCriminalAnalysis-_-Node-WatsonPersonalityInsights-_-BM-DevAd&#34;&gt;Bluemix account&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Click the button deploy.  The button will automagically deploy the Personality Insights starter app that we are going to use.  If you are interested in the code head over to &lt;a href=&#34;https://github.com/IBM-Bluemix/personality-insights-nodejs&#34;&gt;Github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://bluemix.net/deploy?repository=https://github.com/IBM-Bluemix/personality-insights-nodejs.git&amp;amp;cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-WatsonCriminalAnalysis-_-Node-WatsonPersonalityInsights-_-BM-DevAd&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images//2015/03/button-medium.png&#34; alt=&#34;Deploy to Bluemix&#34; /&gt;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Once you app is finished deploying click &amp;ldquo;View your app&amp;rdquo;.  You will be taken to your app.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Hint, if you are lazy and don&amp;rsquo;t want to do the above steps go &lt;a href=&#34;http://watson-um-demo.mybluemix.net&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Next we need to get the text from Dylann Roof that we want to analyze.  It can be found &lt;a href=&#34;http://lastrhodesian.com/data/documents/rtf88.txt&#34;&gt;here&lt;/a&gt;.  Open the link and copy all the text.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Click on &amp;ldquo;Clear&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/07/clear-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images//2015/07/clear-medium.jpg&#34; alt=&#34;clear&#34; /&gt;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Paste the text into the text box&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/07/enter-text-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images//2015/07/enter-text-medium.jpg&#34; alt=&#34;enter-text&#34; /&gt;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Click &amp;ldquo;Analyze&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/07/analyze-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images//2015/07/analyze-medium.jpg&#34; alt=&#34;analyze&#34; /&gt;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Watson will return us Dylann Roof&amp;rsquo;s personality based on the manifesto in just a matter of seconds.&lt;/p&gt;
+
+&lt;blockquote&gt;You are unconventional, shrewd and can be perceived as critical.
+
+You are unconcerned with art: you are less concerned with artistic or creative activities than most people who participated in our surveys. You are laid-back: you appreciate a relaxed pace in life. And you are intermittent: you have a hard time sticking with difficult tasks for a long period of time.
+
+More than most people, your choices are driven by a desire for well-being.
+
+You consider helping others to guide a large part of what you do: you think it is important to take care of the people around you. You are relatively unconcerned with tradition: you care more about making your own path than following what others have done.&lt;cite&gt; -- IBM Watson Analysis of Dylann Roof&#39;s manifesto&lt;/cite&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Additionally Watson provides us a visualization as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/07/personality-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images//2015/07/personality-medium.jpg&#34; alt=&#34;personality&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s next take a look at Anders Behring Breivik, who was responsible for the 2011 attacks in Norway.  His manifesto is available &lt;a href=&#34;https://info.publicintelligence.net/AndersBehringBreivikManifesto.pdf&#34;&gt;here&lt;/a&gt;.  You will need to convert it to a &lt;code&gt;.txt&lt;/code&gt; file. You can do this &lt;a href=&#34;http://www.zamzar.com/convert/pdf-to-txt/&#34;&gt;here&lt;/a&gt;. It will email you a copy of the manifesto in a &lt;code&gt;.txt&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/07/pdf-to-txt-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images//2015/07/pdf-to-txt-medium.jpg&#34; alt=&#34;pdf-to-txt&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So let&amp;rsquo;s repeat the same steps as above.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Clear the text area&lt;/li&gt;
+&lt;li&gt;Paste the text&lt;/li&gt;
+&lt;li&gt;Click Analyze&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; You will need to make sure you have deployed the Bluemix app yourself for this one, the text file is really big and the default app does not support really large files.&lt;/p&gt;
+
+&lt;blockquote&gt;You are shrewd, skeptical and tranquil.
+
+You are philosophical: you are open to and intrigued by new ideas and love to explore them. You are imaginative: you have a wild imagination. And you are independent: you have a strong desire to have time to yourself.
+
+You are motivated to seek out experiences that provide a strong feeling of prestige.
+
+You are relatively unconcerned with both taking pleasure in life and tradition. You prefer activities with a purpose greater than just personal enjoyment. And you care more about making your own path than following what others have done.  &lt;cite&gt; -- IBM Watson Analysis of Anders Behring Breivik&#39;s manifesto&lt;/cite&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/07/personality-norway-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images//2015/07/personality-norway-medium.jpg&#34; alt=&#34;personality-norway&#34; /&gt;&lt;/a&gt;One last example.  I went to Virginia Tech and I was at the school when the &lt;a href=&#34;http://www.cnn.com/2013/10/31/us/virginia-tech-shootings-fast-facts/&#34;&gt;massacre happened there&lt;/a&gt;.  This one hits quite close to home to me.  I was supposed to be in a classroom that fellow students were massacred but I overslept.  Let&amp;rsquo;s take a look at Seung Hui Cho’s &amp;ldquo;Manifesto&amp;rdquo;.  His manifesto is available &lt;a href=&#34;https://schoolshooters.info/sites/default/files/cho_manifesto_1.1.pdf&#34;&gt;here&lt;/a&gt;.  You will need to convert it to a &lt;code&gt;.txt&lt;/code&gt; file. You can do this &lt;a href=&#34;http://www.zamzar.com/convert/pdf-to-txt/&#34;&gt;here&lt;/a&gt;. It will email you a copy of the manifesto in a &lt;code&gt;.txt&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/07/pdf-to-txt-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images//2015/07/pdf-to-txt-medium.jpg&#34; alt=&#34;pdf-to-txt&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So let&amp;rsquo;s repeat the same steps as above.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Clear the text area&lt;/li&gt;
+&lt;li&gt;Paste the text&lt;/li&gt;
+&lt;li&gt;Click Analyze&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;You are boisterous and somewhat shortsighted.
+
+You are content: you are content with your level of accomplishment and do not feel the need to set ambitious goals. You are confident: you are hard to embarrass and are self-confident most of the time. And you are carefree: you do what you want, disregarding rules and obligations.
+
+More than most people, your choices are driven by a desire for modernity.
+
+You consider independence to guide a large part of what you do: you like to set your own goals to decide how to best achieve them. You are relatively unconcerned with tradition: you care more about making your own path than following what others have done. &lt;cite&gt; -- IBM Watson Analysis of Seung Hui Cho&#39;s manifesto&lt;/cite&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/07/personality-virginia-tech-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/07/personality-virginia-tech-medium.jpg&#34; alt=&#34;personality-virginia-tech&#34; /&gt;&lt;/a&gt;Let&amp;rsquo;s do some analysis on all this data now.  It looks like all the shooter&amp;rsquo;s from these massacres have the following in common.&lt;/p&gt;
+
+&lt;p&gt;It looks like from the Charleston and Norway events both share the following traits and a high percentage of both of them.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Authority-challenging&lt;/li&gt;
+&lt;li&gt;Self-transcendence&lt;/li&gt;
+&lt;li&gt;Openness to change&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Also on the flip side they both share the following traits with low percentages, which if you think about it means probably huge red flags.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Conversation (Charleston was 3%, Norway was 11%)&lt;/li&gt;
+&lt;li&gt;Cheerfulness (Charleston 12%, Norway 2%)&lt;/li&gt;
+&lt;li&gt;Trust (Charleston 11%, Norway 8%)&lt;/li&gt;
+&lt;li&gt;Uncompromising (Charleston 9%, 3%)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So digging into it a little more by no means am I a psychologist but it seems to me that a person that has low values in conversation, cheerfulness, trust, and uncompromising could definitely be red flags.  Additionally, high values in authority-challenging, self-transcendence, openness to change paired with the above low characteristics could be a model to try to detect some of these behaviors and thoughts earlier on.&lt;/p&gt;
+
+&lt;p&gt;Going forward if police or schools could analyze the text of suspected criminal&amp;rsquo;s before hand maybe these horrible massacre&amp;rsquo;s could of been prevented.  Maybe for the Dylann Roof case if the FBI examiner that reviewed Dylann Roof&amp;rsquo;s gun permit had access to a tool like this it could of prevented the whole situation.  I know that is kinda big brother but I really believe in a somewhat of an invasion of privacy for the overall good of humanity.&lt;/p&gt;
+
+&lt;p&gt;This demo could easily be extended to use more automated methods as well.  Think of companies like Dropbox analyzing files or your ISP analyzing files.  I know this would be quite creepy but it could honestly possibly save lives and prevent these horrible massacres.&lt;/p&gt;
+
+&lt;p&gt;I know this post is kind of controversial but it is good to be talking about this and hopefully some good will come from this.  Please leave me feedback below or tweet me &lt;a href=&#34;http://twitter.com/jsloyer&#34;&gt;@jsloyer&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Personality Box – You had me at upload</title>
+      <link>http://www.jeffsloyer.io/post/personality-box-you-had-me-at-upload/</link>
+      <pubDate>Mon, 29 Jun 2015 10:46:59 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/personality-box-you-had-me-at-upload/</guid>
+      <description>&lt;p&gt;As &lt;a href=&#34;http://www-03.ibm.com/press/us/en/pressrelease/47185.wss&#34;&gt;announced yesterday&lt;/a&gt;, IBM has formed a partnership with &lt;a href=&#34;http://Box.com&#34;&gt;Box.com&lt;/a&gt;, a partnership that includes the integration of Box into the Bluemix catalog. With its REST-based Content and View APIs, embedding enterprise-grade file storage into your app and enabling file sharing among your users has never been simpler.&lt;/p&gt;
+
+&lt;p&gt;To help you on your way to becoming a file-sharing guru, Bluemix developer advocate Jake Peyser and I have built a sample app that you can leverage as you begin to explore the possibilities of the &lt;a href=&#34;http://box.com&#34;&gt;Box.com&lt;/a&gt; APIs.&lt;!-- more --&gt; The video below shows the application and outlines the steps to create it:&lt;/p&gt;
+
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/KPT7ttRRpr4&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;If you want to follow &lt;em&gt;written&lt;/em&gt; step-by-step instructions on how we leveraged the &lt;a href=&#34;http://box.com&#34;&gt;Box.com&lt;/a&gt; and Watson Personality Insights services to create our app, see &lt;a href=&#34;https://developer.ibm.com/bluemix/2015/06/24/intro-to-box/&#34;&gt;Integrate Cloud File Storage and Sharing into your Bluemix App with Box&lt;/a&gt;. We encourage you to pick up where we left off and build on this sample!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How Watson and Bluemix see the State of the Union</title>
+      <link>http://www.jeffsloyer.io/post/how-watson-and-bluemix-see-the-state-of-the-union/</link>
+      <pubDate>Wed, 21 Jan 2015 09:45:24 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/how-watson-and-bluemix-see-the-state-of-the-union/</guid>
+      <description>
+
+&lt;p&gt;The State of the Union, a live broadcast that many Americans historically use as a tool to form opinions about the current political system, and gain insight from their Commander in Chief into the transparency of a system of checks and balances.  What is more interesting is the thoughts and underlying feelings between the State of the Union.  If we could figure out how the President is feeling or portraying himself, could we infer how the President will schedule and work with legislation and policy for the rest of the year?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/1USIIGtkypiwhO6W4o8cwIw-medium.jpeg&#34; alt=&#34; How Watson and Bluemix see the State of the Union&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If we tried to do this today, could we go back and re-read all of the State of the Unions and apply custom algorithms to help determine the sentiment behind the speeches?  This is no longer a dream, but a reality.  We can use &lt;a href=&#34;http://bluemix.net/&#34;&gt;IBM Bluemix&lt;/a&gt; to create an app that will pull in the speeches and leverage the IBM Watson User Modeling Service to analyze the speeches.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Wouldn’t it be interesting if we could compare the speeches from previous State of the Union addresses and compare the underlying sentiment behind them?  Today we can, and it is pretty easy.  MSNBC published &lt;a href=&#34;http://www.msnbc.com/msnbc/how-supercomputer-sees-the-state-the-union&#34;&gt;How a supercomputer sees the State of the Union&lt;/a&gt; explaining how they used IBM Watson to do this.  Let’s take it a step further, let’s build our app in about 5 minutes, and try it ourselves!&lt;/p&gt;
+
+&lt;blockquote&gt;The biggest takeaway? This year’s State of the Union was surprisingly on-trend with the patterns established by previous speeches.Sam Petulla and Mina Liu – MSNBC&lt;/blockquote&gt;
+
+&lt;p&gt;So let’s dig into how we could do this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/BluemixSOTU3-medium.gif&#34; alt=&#34;BluemixSOTU3 How Watson and Bluemix see the State of the Union&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;let-s-build-it&#34;&gt;Let’s Build it!&lt;/h3&gt;
+
+&lt;p&gt;The goal at the end of these couple steps is to have our own Node.js app that uses the User Modeling Service to analyze the 2015 State of the Union.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;So first we need to sign up for &lt;a href=&#34;http://bluemix.net/&#34;&gt;Bluemix&lt;/a&gt; if you don’t have an account.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Once we have logged in visit the Catalog and at the top under Boilerplates let’s click on UserModeling Node.js, or go &lt;a href=&#34;https://console.ng.bluemix.net/catalog/personality-insights-nodejs-web-starter/&#34;&gt;directly here&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;On the right hand side we just need to give our app a name.  This will be the URL we will access our app at.  Note, it needs to be unique, for my app I chose sotu-jbs, you can choose anything you want.&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/watsonappcreate-medium.jpg&#34; alt=&#34;watsonappcreate How Watson and Bluemix see the State of the Union&#34; /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Click Create.  What is happening behind the scenes is Bluemix is spinning up a Node.js starter app that will allow you to analyze the state of the union address with Watson.  Pretty cool huh?&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Bluemix will take you to a dashboard and after a little bit it will show you that your app is up and running.  To access our app, click the URL near the top of the dashboard under the name of our app.&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/apprunning1-medium.jpg&#34; alt=&#34;apprunning1 How Watson and Bluemix see the State of the Union&#34; /&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/urlforapp-medium.jpg&#34; alt=&#34;urlforapp How Watson and Bluemix see the State of the Union&#34; /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Now the hard bit, we need to grab the full text of the speech.  This year was the first time the White House put out the full text of the speech, it is available on &lt;a href=&#34;http://edition.cnn.com/2015/01/20/politics/state-of-the-union-2015-transcript-full-text/index.html&#34;&gt;CNN&lt;/a&gt;.  I have also made the full text available &lt;a href=&#34;https://dl.dropboxusercontent.com/u/66686/2015sotu.txt&#34;&gt;here&lt;/a&gt;.  Copy this text.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Go back to your app you created that just opened up.  It should show something like the following.  We want to clear the text and paste the full contents of the State of the Union.&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/usermodelingapp-medium.jpg&#34; alt=&#34;usermodelingapp How Watson and Bluemix see the State of the Union&#34; /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Click &amp;ldquo;Analyze&amp;rdquo;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;That’s it.   You should have some output like the following. With Bluemix and Watson we were just able to analyze the sentiment/personality of the President in the 2015 State of the Union.&lt;/p&gt;
+
+&lt;p&gt;Personality with percentages:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/personalitysotu-medium.jpg&#34; alt=&#34;personalitysotu 461x1024 How Watson and Bluemix see the State of the Union&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Personality Visualization:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/visualizationsotu-medium.jpg&#34; alt=&#34;visualizationsotu How Watson and Bluemix see the State of the Union&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;wrap-up&#34;&gt;Wrap up&lt;/h3&gt;
+
+&lt;p&gt;So let’s go over what we did, in a matter of less than 5 minutes we spun up a Node.js app, connected it to Watson and analyzed the State of the Union.  What Bluemix does for us is gives us a platform to run our apps and connects super cool and powerful services such as Watson to our apps in a matter of seconds.  In the image below, we can see our app running and that is connected to Watson.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/watsonconnected-medium.jpg&#34; alt=&#34;watsonconnected How Watson and Bluemix see the State of the Union&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you want to give this a try without deploying an app head over to the &lt;a href=&#34;http://watson-um-demo.mybluemix.net/&#34;&gt;User Modeling Demo in Bluemix&lt;/a&gt; and paste in your text.&lt;/p&gt;
+
+&lt;h3 id=&#34;learn-more&#34;&gt;Learn More&lt;/h3&gt;
+
+&lt;p&gt;If you want to learn more about other Bluemix services and Watson services go to the following links.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://console.ng.bluemix.net/?cm_mmc=developerWorks-_-dWdevcenter-_-bluemix-_-lp#/solutions&#34;&gt;Bluemix Solutions&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://console.ng.bluemix.net/?cm_mmc=developerWorks-_-dWdevcenter-_-bluemix-_-lp#/store/cloudOEPaneId=store&#34;&gt;Bluemix Services&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://console.ng.bluemix.net/?cm_mmc=developerWorks-_-dWdevcenter-_-bluemix-_-lp#/solutions/solution=watson&#34;&gt;Watson Services in Bluemix&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/user-modeling.html&#34;&gt;Watson Developer Cloud – User Modeling&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Twitter Personality Comparisons Using Watson</title>
+      <link>http://www.jeffsloyer.io/post/twitter-personality-comparisons-using-watson/</link>
+      <pubDate>Mon, 24 Nov 2014 22:06:16 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/twitter-personality-comparisons-using-watson/</guid>
+      <description>&lt;p&gt;Hey Yall!&lt;/p&gt;
+
+&lt;p&gt;We are back at it again with some demos!!!&lt;/p&gt;
+
+&lt;p&gt;Did you ever wonder if you and your favorite celebrity would be compatible if you met?? I sure do! Or did you ever wonder how you could become a better leader, I sure do. Today you would have to go Google the person and analyze posts and articles about them and be a personality expert to see if you have personality traits in common.&lt;/p&gt;
+
+&lt;p&gt;Gone are those days now!&lt;/p&gt;
+
+&lt;p&gt;Enter &lt;a href=&#34;http://friendme.mybluemix.net/&#34;&gt;FriendMe&lt;/a&gt;!  Your trusted personality comparison using IBM Watson. The answer to the above questions are easy now.  For example,  if I compared myself to the IBM Design Twitter account, I can see my personality is very much alike with the IBM Design team.  Thats good news for me because I never considered myself a designer…
+&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/jeff-and-ibm-design-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/jeff-and-ibm-design-medium.jpg&#34; alt=&#34;jeff and ibm design Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;For the leadership, personal, and professional case, Jerry Cuomo is a very successful leader at IBM. I can see that myself and Jerry share 5 out of the top 5 personality traits in common.  In my career development I can see I need to develop myself more as a transformational leader.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/jeff-and-jerry-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/jeff-and-jerry-medium.jpg&#34; alt=&#34;jeff and jerry Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Lastly, I am going to do one more comparison, between myself and Blake McGregor (a product manager for Bluemix).&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/jeff-and-blake-medium.jpg&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/jeff-and-blake-medium.jpg&#34; alt=&#34;jeff and blake Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So let’s jump right into it.&lt;/p&gt;
+
+&lt;p&gt;This app was written in about 6 hours, its built using obviously IBM Bluemix, Node.JS, Angular.JS, Bootstrap, JQuery, IBM Watson, Cloudant, and Twilio.&lt;/p&gt;
+
+&lt;p&gt;If you went to the link above, &lt;a href=&#34;http://friendme.mybluemix.net/&#34;&gt;here it is again&lt;/a&gt;.  You can actually text the app.  If you text the app two Twitter handles it will tell you the compatibility between two people.&lt;/p&gt;
+
+&lt;p&gt;So the source code is available &lt;a href=&#34;https://github.com/IBM-bluemix/friendme&#34;&gt;on Github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;First, we are going to walk through on how to deploy this app and get it working in Bluemix.  Secondly, we are going to walk through how to use the command line to deploy this app as well.&lt;/p&gt;
+
+&lt;p&gt;If you haven’t already sign up for a &lt;a href=&#34;http://bluemix.net/?cm_mmc=developerWorks-_-dWdevcenter-_-bluemix-_-lp&#34;&gt;Bluemix account&lt;/a&gt;.  Once you have done that head over to&lt;a href=&#34;http://jazzhub.com&#34;&gt; jazzhub.com&lt;/a&gt;.  Login there with the username and password you created from your Bluemix account.  If you haven’t logged in yet to jazzhub it will ask you to create an id.  For example if my email is jsmith@co.com, I would create a username of jsmith.&lt;/p&gt;
+
+&lt;p&gt;First, let’s open a web browser and goto &lt;a href=&#34;https://github.com/IBM-bluemix/friendme&#34;&gt;https://github.com/IBM-bluemix/friendme&lt;/a&gt;.  Since we already created an account or logged in jazzhub above we should be logged in.  On the right hand side near the top there should be a big button that says &amp;ldquo;Fork Project&amp;rdquo;.  Let’s click that.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/fork-medium.png&#34;&gt;
+&lt;/a&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/fork-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/fork-medium.png&#34; alt=&#34;fork 300x83 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s go ahead and enter a project name, for example friendme, you can name it anything you want though.  Next place a check mark next to &amp;ldquo;Make it Private&amp;rdquo;, more on this later…  Next make sure an organization and space is shown, it should should your email address as the organization and the space should be dev.  Lastly, click &amp;ldquo;Save&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/fork2-medium.png&#34;&gt;
+&lt;/a&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/fork2-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/fork2-medium.png&#34; alt=&#34;fork2 300x239 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next we need to create the app in Bluemix and setup some services.  So in a new browser window navigate to&lt;a href=&#34;http://bluemix.net/&#34;&gt; http://bluemix.net&lt;/a&gt;.  In the top right click login.&lt;/p&gt;
+
+&lt;p&gt;Once you login click on catalog and find SDK for Node.JS.  Go ahead and click on it.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/node-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/node-medium.png&#34; alt=&#34;node 269x300 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Type in a name for your app, this will also be the URL for your app, remember this as we will need it later…  Then click &amp;ldquo;Create&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;Behind the scenes Bluemix is spinning up a container for our app, setting up SSL, and setting up load balancing. In a traditional IaaS, you would have to do all this manually and it can take hours or days…&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/createapp-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/createapp-medium.png&#34; alt=&#34;createapp 228x300 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next, we need to add some services to our app.  We need Watson and Cloudant.  Let’s do Watson first.  The Watson service that we want is User Modeling.  It will analyze text and determine someone’s personality.  So to do this let’s click &amp;ldquo;Add A Service&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/addservice-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/addservice-medium.png&#34; alt=&#34;addservice 300x76 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s go to the Watson section and click on &amp;ldquo;User Modeling&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/usermodeling-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/usermodeling-medium.png&#34; alt=&#34;usermodeling 300x115 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;It will bring up a dialog asking us to bind the service to our app, on the right hand side, click &amp;ldquo;Create&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/usermodeling2-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/usermodeling2-medium.png&#34; alt=&#34;usermodeling2 224x300 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;It will ask us if we want to restage the app, go ahead and click ok.  What this means is it needs to bind the service to the app and to do this it needs to restart it.&lt;/p&gt;
+
+&lt;p&gt;Next, we need to create a database, to do this let’s click on the Cloudant tile.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantclick-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantclick-medium.png&#34; alt=&#34;cloudantclick 300x221 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Then let’s click on the launch button.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantlaunch-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantlaunch-medium.png&#34; alt=&#34;cloudantlaunch 300x103 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next we need to create a database, click on &amp;ldquo;Add New Database&amp;rdquo; in the top right.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/addnewdb-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/addnewdb-medium.png&#34; alt=&#34;addnewdb 300x48 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Then enter a name for the database, let’s use friendme, if you use something else we will have to edit the code…  Go ahead and click &amp;ldquo;Create&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/db-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/db-medium.png&#34; alt=&#34;db 300x150 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;We can close out of Cloudant now.&lt;/p&gt;
+
+&lt;p&gt;So, since we are making API calls to Twilio and Twitter we need to register for API key’s.&lt;/p&gt;
+
+&lt;p&gt;Let’s do Twitter first, head on over to &lt;a href=&#34;http://apps.twitter.com&#34;&gt;http://apps.twitter.com&lt;/a&gt; and login with your Twitter username and password.&lt;/p&gt;
+
+&lt;p&gt;In the top right let’s click on &amp;ldquo;Create New App&amp;rdquo;.  Type in a name and description for the app, the URL actually doesn’t matter but let’s type in something real.  Remember above the name you created for your app in Bluemix, let’s type that in.  For example &lt;a href=&#34;http://friendme.mybluemix.net&#34;&gt;http://friendme.mybluemix.net&lt;/a&gt;.  Replace friendme with the name of your app.&lt;/p&gt;
+
+&lt;p&gt;Click on the &amp;ldquo;Keys and Access Tokens&amp;rdquo; tab.  Under Access Tokens click &amp;ldquo;Create my access token&amp;rdquo;.  Leave this tab open, we will need these API’s keys in a bit…&lt;/p&gt;
+
+&lt;p&gt;Next we need a Twilio phone number if you would like to be able to text your app.  If you don’t want to be able to text the app skip this section, you can use the UI of the app to interact with it.  Head on over to &lt;a href=&#34;https://www.twilio.com/try-twilio?promo=bluemix&#34;&gt;https://www.twilio.com/try-twilio&lt;/a&gt; and create an account.  If you already have an account go ahead and goto &lt;a href=&#34;https://www.twilio.com/user/account/phone-numbers/incoming&#34;&gt;https://www.twilio.com/user/account/phone-numbers/incoming&lt;/a&gt; or if you just created an account go there as well.&lt;/p&gt;
+
+&lt;p&gt;We need to buy a number, to do this click on &amp;ldquo;Buy Number&amp;rdquo; in the top right.  Make sure the number has texting capabilities.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/twilio-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/twilio-medium.png&#34; alt=&#34;twilio 300x137 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Try to find one of the cheaper ones, the cheapest you can find is $1/month, not bad…&lt;/p&gt;
+
+&lt;p&gt;So once we buy the number we will need our API key’s.  They can be found at &lt;a href=&#34;https://www.twilio.com/user/account/settings&#34;&gt;https://www.twilio.com/user/account/settings&lt;/a&gt;.  Leave this tab open like we did for Twitter, we will come back to this…&lt;/p&gt;
+
+&lt;p&gt;Ok so finally time to deploy our app.  To do this switch back to Jazzhub, click the &amp;ldquo;Build &amp;amp; Deploy&amp;rdquo; button in the top right.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/buildanddeploy-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/buildanddeploy-medium.png&#34; alt=&#34;buildanddeploy 300x53 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Go ahead and click on &amp;ldquo;Advanced&amp;rdquo; to turn on deployments.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/advanced-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/advanced-medium.png&#34; alt=&#34;advanced 300x54 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Click on &amp;ldquo;add a builder&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/addabuilder-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/addabuilder-medium.png&#34; alt=&#34;addabuilder 300x293 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;For builder type choose &amp;ldquo;Shell Script&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;For the build script text area enter the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+echo &amp;quot;do nothing&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Since it is node we really don’t need a build here…  If this wasn’t a demo and real app we would probably run some unit tests and do some linting here…&lt;/p&gt;
+
+&lt;p&gt;Click on Save.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/builderdone-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/builderdone-medium.png&#34; alt=&#34;builderdone 300x228 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next we need to set up the deployment.  Click on &amp;ldquo;add a stage&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/addstage-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/addstage-medium.png&#34; alt=&#34;addstage 300x242 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Make sure the app name matches the app name we created in Bluemix.&lt;/p&gt;
+
+&lt;p&gt;Last thing we need to do is modify the build script.  This is the only really confusing bit, you need to make sure you set this up correct or the app won’t work…&lt;/p&gt;
+
+&lt;p&gt;When you first click on &amp;ldquo;add a stage&amp;rdquo; it will look like the following&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/deploybefore-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/deploybefore-medium.png&#34; alt=&#34;deploybefore 300x239 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The script will look like the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf push &amp;quot;${CF_APP}&amp;quot; -n &amp;quot;${CF_APP}-${CF_SPACE}&amp;quot;
+
+# View logs
+EXIT_CODE=$?
+if [ $EXIT_CODE -ne 0 ]
+then
+    cf logs &amp;quot;${CF_APP}&amp;quot; --recent
+    exit $EXIT_CODE
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We will need to update it to the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf set-env &amp;quot;${CF_APP}&amp;quot; TWILIO_PHONENUMBER &amp;quot;replaceme&amp;quot;
+cf set-env &amp;quot;${CF_APP}&amp;quot; TWILIO_SID &amp;quot;replaceme&amp;quot;
+cf set-env &amp;quot;${CF_APP}&amp;quot; TWILIO_TOKEN &amp;quot;replaceme&amp;quot;
+cf set-env &amp;quot;${CF_APP}&amp;quot; TWITTER_ACCESSTOKEN_KEY &amp;quot;replaceme&amp;quot;
+cf set-env &amp;quot;${CF_APP}&amp;quot; TWITTER_ACCESSTOKEN_SECRET &amp;quot;replaceme&amp;quot;
+cf set-env &amp;quot;${CF_APP}&amp;quot; TWITTER_CONSUMER_KEY &amp;quot;replaceme&amp;quot;
+cf set-env &amp;quot;${CF_APP}&amp;quot; TWITTER_CONSUMER_SECRET &amp;quot;replaceme&amp;quot;
+
+cf push &amp;quot;${CF_APP}&amp;quot; -c &amp;quot;node lib/app.js&amp;quot;
+
+# View logs
+EXIT_CODE=$?
+if [ $EXIT_CODE -ne 0 ]
+then
+    cf logs &amp;quot;${CF_APP}&amp;quot; --recent
+    exit $EXIT_CODE
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For each of these values we need to substitute in the the correct values from the tab’s we kept open earlier from Twitter and Twilio.&lt;/p&gt;
+
+&lt;p&gt;If you remember earlier we made the project private, this was to prevent other people from seeing our secret access key’s.  DevOps Service will be rolling out a new over the coming weeks where you can find information for a public project.&lt;/p&gt;
+
+&lt;p&gt;Once you replace the values go ahead and click &amp;ldquo;Save&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;Last thing to do is click &amp;ldquo;Request Build&amp;rdquo;.  That should successfully complete and that will trigger a deployment of your app.&lt;/p&gt;
+
+&lt;p&gt;You can see the deployment is being performed by the following screen shot.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/buildrunning-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/buildrunning-medium.png&#34; alt=&#34;buildrunning 300x195 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Once the deployment finishes you can click the link (name of your app) to your app to use it!&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/done-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/done-medium.png&#34; alt=&#34;done 300x207 Twitter Personality Comparisons Using Watson&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Please reach out to me on Twitter (&lt;a href=&#34;http://twitter.com/jsloyer&#34;&gt;@jsloyer&lt;/a&gt;) if you have any issues or post a comment below.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Deploying a Watson and Cloudant App with DevOps Services</title>
+      <link>http://www.jeffsloyer.io/post/deploying-a-watson-and-cloudant-app-with-devops-services/</link>
+      <pubDate>Mon, 24 Nov 2014 21:54:23 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/deploying-a-watson-and-cloudant-app-with-devops-services/</guid>
+      <description>&lt;p&gt;Backed by popular demand this is a continuation of the post &lt;a href=&#34;http://www.jeffsloyer.io/post/building-a-java-ee-app-on-ibm-bluemix-using-watson-and-cloudant/&#34;&gt;Building a Java EE app on IBM Bluemix Using Watson and Cloudant&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This post will detail how to build and deploy the app using &lt;a href=&#34;http://jazzhub.com&#34;&gt;IBM DevOps Services.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;There is a bit of magic behind this, its called &amp;ldquo;The Deploy to Bluemix Button&amp;rdquo;&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;Clicking the magic button below will setup the app using IBM DevOps services and deploy the whole application for you.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://bluemix.net/deploy?repository=https://github.com/IBM-Bluemix/talent-manager.git&#34;&gt;&lt;img src=&#34;https://deployment-tracker.mybluemix.net/stats/500deb1cbae77105c6d2ae42b50120cd/button.svg&#34; alt=&#34;Deploy to Bluemix&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So let&amp;rsquo;s talk about what this magic button does.  The button is actually just a shortcut to setting up the deployment pipeline for you.  What it does behind the covers is the following.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Clones the git project&lt;/li&gt;
+&lt;li&gt;Configures the devops pipeline&lt;/li&gt;
+&lt;li&gt;Triggers the pipeline
+
+&lt;ol&gt;
+&lt;li&gt;Compiles the &lt;code&gt;.war&lt;/code&gt; file&lt;/li&gt;
+&lt;li&gt;Deploys the application To Bluemix&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Isn&amp;rsquo;t that pretty cool?  Well what are you waiting for, click the button above!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Building a Java EE app on IBM Bluemix Using Watson, Cloudant</title>
+      <link>http://www.jeffsloyer.io/post/building-a-java-ee-app-on-ibm-bluemix-using-watson-and-cloudant/</link>
+      <pubDate>Tue, 14 Oct 2014 22:36:53 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/building-a-java-ee-app-on-ibm-bluemix-using-watson-and-cloudant/</guid>
+      <description>
+
+&lt;p&gt;Hey Y’all!&lt;/p&gt;
+
+&lt;p&gt;Jeff here again and something I am really excited about is Watson is &lt;a href=&#34;https://developer.ibm.com/bluemix/2014/10/08/watson-on-bluemix&#34;&gt;now available for anyone to use in Bluemix!&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Today we are going to be building an example app using Java, Cloudant, and Watson.&lt;/p&gt;
+
+&lt;p&gt;Ok let’s talk through what this app is going to do before we build it.&lt;/p&gt;
+
+&lt;p&gt;Meet Ivy (hello!)&lt;/p&gt;
+
+&lt;p&gt;She’s a talent manager at a growing tech startup.&lt;/p&gt;
+
+&lt;p&gt;She’s looking for a new hire that would be a good fit on her team but the company is so popular that she has a huge inventory of resumes to sort through. She’s looking for tools to help her, and tools beyond just simple tag filters.&lt;/p&gt;
+
+&lt;p&gt;With Watson services she can also start to solve for a problem like, &amp;ldquo;I’m looking for another developer like &amp;ldquo;[insert cool employee].&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;So in this case, the application can issue queries such as,&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Find me a Developer like Craig Smith.Then search through all possible candidate and return a ranked list of candidates sorted by highest-to-lowest percentage of personality resemblance. From here, searches can be refined by including technical skills. Find me a Developer like Craig Smith, and knows Java, C and Python.&lt;/p&gt;
+
+&lt;p&gt;&amp;ndash; &lt;cite&gt;Ivy (HR Manager)&lt;/cite&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Make sense??&lt;/p&gt;
+
+&lt;p&gt;Ok let’s jump right in.&lt;/p&gt;
+
+&lt;h2 id=&#34;pre-req-s&#34;&gt;Pre-req&amp;rsquo;s&lt;/h2&gt;
+
+&lt;p&gt;First thing you need to do is clone the github project with some starter code.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone https://github.com/IBM-Bluemix/talent-manager.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Or &lt;a href=&#34;https://github.com/IBM-Bluemix/talent-manager/archive/master.zip&#34;&gt;download a zip file&lt;/a&gt; if you don’t have git installed.&lt;/p&gt;
+
+&lt;p&gt;Next we need to complete a couple pre-req steps.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers&#34;&gt;Download Eclipse EE&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html&#34;&gt;Download and install Java 1.7 JDK&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.ng.bluemix.net/docs/#starters/install_cli.html?cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-JavaEEWatsonCloudant-_-Node-WatsonPersonalityInsights-_-BM-DevAd&#34;&gt;Download and install the Cloud Foundry CLI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://bluemix.net/?cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-JavaEEWatsonCloudant-_-Node-WatsonPersonalityInsights-_-BM-DevAd&#34;&gt;Sign up for a FREE IBM Bluemix account if you don’t have one yet&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Ok once we have all that setup we can start creating our app.&lt;/p&gt;
+
+&lt;h2 id=&#34;create-the-application&#34;&gt;Create the application&lt;/h2&gt;
+
+&lt;p&gt;First we need to sign into Bluemix, so open your browser and head on over to &lt;a href=&#34;http://bluemix.net/?cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-JavaEEWatsonCloudant-_-Node-WatsonPersonalityInsights-_-BM-DevAd&#34;&gt;Bluemix&lt;/a&gt;.  We need to login.  Up at the top lets go ahead and click on Catalog.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/catalog-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/catalog-medium.png&#34; alt=&#34;catalog 300x99 Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Scroll down a little and click on Liberty&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/liberty-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/liberty-medium.png&#34; alt=&#34;liberty 1024x585 Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;On the right hand side we need to give our app a name.  Please note that this name must be unique.  Also remember this name as we will need it later…&lt;/p&gt;
+
+&lt;p&gt;Click create.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/new-app-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/new-app-medium.png&#34; alt=&#34;new app Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Bluemix will start deploying our app and Bluemix will start our app.&lt;/p&gt;
+
+&lt;p&gt;So next we need to add Cloudant and Watson to our app!&lt;/p&gt;
+
+&lt;p&gt;So do you that make sure you are in the dashboard and have your app open like the screencap below.  We will then click the &amp;ldquo;Add A Service&amp;rdquo; button.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/add-service-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/add-service-medium.png&#34; alt=&#34;add service 1024x683 Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;First let’s add Watson.  Scroll down until you find the &amp;ldquo;User Modeling&amp;rdquo; Service.  Go ahead and click that.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/user-modeling-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/user-modeling-medium.png&#34; alt=&#34;user modeling 1024x342 Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Again, all we have to do is click &amp;ldquo;Create&amp;rdquo; on the right hand side.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/watson-create-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/watson-create-medium.png&#34; alt=&#34;watson create Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Bluemix is going to ask us if we want to restage our app, we should click the &amp;ldquo;OK&amp;rdquo; button.  What Bluemix is asking us here is since we made a change to our app, the app needs to be restarted to bind in Watson.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/restage-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/restage-medium.png&#34; alt=&#34;restage Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next, let’s click &amp;ldquo;Add A Service&amp;rdquo; again.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/addserviceagain-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/addserviceagain-medium.png&#34; alt=&#34;addserviceagain Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;
+This time scroll down to the bottom and choose &amp;ldquo;Cloudant&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/cloudant-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/cloudant-medium.png&#34; alt=&#34;cloudant 1024x245 Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Then click &amp;ldquo;Create&amp;rdquo; on the right hand side.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantcreate-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantcreate-medium.png&#34; alt=&#34;cloudantcreate Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;It is going to ask us to restage our app again, go ahead and click &amp;ldquo;OK&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantrestage-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantrestage-medium.png&#34; alt=&#34;cloudantrestage Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we have all our services added.  Let’s go ahead and start getting some data imported.&lt;/p&gt;
+
+&lt;p&gt;On the dashboard for the app let’s go ahead and click on Cloudant.&lt;/p&gt;
+
+&lt;h2 id=&#34;explanation-of-cloudant&#34;&gt;Explanation of Cloudant&lt;/h2&gt;
+
+&lt;p&gt;So let’s pause and explain what Cloudant is.  Cloudant is a No-SQL database that is based on CouchDB.  The big difference between a relationship database and No-SQL database is illustrated below.  In the relationship database you have to have multiple tables to represent the data and have to use SQL and JOIN statements to get data from both tables.  In a No-SQL database which is commonly referred to as a document store database you stores JSON documents/data (as illustrated on the left below).&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/Figure5a-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/Figure5a-medium.png&#34; alt=&#34;Figure5a Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So back to the demo&amp;hellip;&lt;/p&gt;
+
+&lt;h2 id=&#34;eclipse-steps&#34;&gt;Eclipse Steps&lt;/h2&gt;
+
+&lt;p&gt;In Eclipse, right click on the project’s area on the left.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/import-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/import-medium.png&#34; alt=&#34;import Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Under General click existing project into workspace and click next&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/existingproject-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/existingproject-medium.png&#34; alt=&#34;existingproject Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next we want to find our project we downloaded from github.  We need to browse to the directory where it is.  Once you find the talent-manager folder, go one more level down into that into a folder called personafusion (as shown below). Click finish.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/finishimport-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/finishimport-medium.png&#34; alt=&#34;finishimport Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next, we need to make a couple code edits…&lt;/p&gt;
+
+&lt;p&gt;In &lt;code&gt;src/com.ibm.personafusion/Config.java&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Line 10 currently reads like below.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public static final String CLOUDANT_NAME = &amp;quot;&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It needs to be changed to what is below.  This is our Cloudant database name we created.  If you used something other than &amp;ldquo;talent-manager here&amp;rdquo; type that in.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public static final String CLOUDANT_NAME = &amp;quot;talent-manager&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Go ahead and save that file and close it.&lt;/p&gt;
+
+&lt;p&gt;Next open &lt;code&gt;src/com.ibm.personafusion/CloudantClient.java&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;We need to update our constructor from what is below.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public CloudantClient()
+    {
+        this.httpClient = null;
+
+        //TODO read env VCAP_SERVICES and parse it into JSON
+        this.port = Config.CLOUDANT_PORT;
+        this.host = &amp;quot;&amp;quot;;
+        this.username = &amp;quot;&amp;quot;;
+        this.password = &amp;quot;&amp;quot;;
+        this.name = Config.CLOUDANT_NAME;
+        this.dbc = this.createDBConnector();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To this.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;private JSONArray cloudant;
+private JSONObject cloudantInstance;
+private JSONObject cloudantCredentials;
+
+  public CloudantClient()
+  {
+    this.httpClient = null;
+
+     try {
+        String VCAP_SERVICES = System.getenv(&amp;quot;VCAP_SERVICES&amp;quot;);
+        JSONObject vcap;
+        vcap = (JSONObject) JSONObject.parse(VCAP_SERVICES);
+
+        cloudant = (JSONArray) vcap.get(&amp;quot;cloudantNoSQLDB&amp;quot;);
+        cloudantInstance = (JSONObject) cloudant.get(0);
+        cloudantCredentials = (JSONObject) cloudantInstance.get(&amp;quot;credentials&amp;quot;);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      this.port = Config.CLOUDANT_PORT;
+      this.host = (String) cloudantCredentials.get(&amp;quot;host&amp;quot;);
+      this.username = (String) cloudantCredentials.get(&amp;quot;username&amp;quot;);
+      this.password = (String) cloudantCredentials.get(&amp;quot;password&amp;quot;);
+      this.name = Config.CLOUDANT_NAME;
+      this.dbc = this.createDBConnector();
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you notice we also added 3 global variables as well.&lt;/p&gt;
+
+&lt;p&gt;Next we need to update the Watson code as well.  This is located in &lt;code&gt;src/com.ibm.personafusion/services/WatonUserModeler.java&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Before:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public WatsonUserModeller() {
+    //TODO read env VCAP_SERVICES and parse it into JSON
+    this.username = &amp;quot;&amp;quot;;
+    this.password = &amp;quot;&amp;quot;;
+    this.base_url = &amp;quot;&amp;quot;;
+    this.profile_api = Config.WATSON_PROF_API;
+    this.visual_api = Config.WATSON_VIZ_API;
+    this.executor = Executor.newInstance().auth(username, password);
+    if (this.executor == null)
+    {
+        System.err.println(&amp;quot;Authentication failed in WatsonUserModeller.&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;private static JSONArray watson;
+private static JSONObject watsonInstance;
+private static JSONObject watsonCredentials;
+
+    private Executor executor;
+
+    public WatsonUserModeller()
+    {
+        try {
+            String VCAP_SERVICES = System.getenv(&amp;quot;VCAP_SERVICES&amp;quot;);
+            JSONObject vcap;
+            vcap = (JSONObject) JSONObject.parse(VCAP_SERVICES);
+
+            watson = (JSONArray) vcap.get(&amp;quot;user_modeling&amp;quot;);
+            watsonInstance = (JSONObject) watson.get(0);
+            watsonCredentials = (JSONObject) watsonInstance.get(&amp;quot;credentials&amp;quot;);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        this.username = (String) watsonCredentials.get(&amp;quot;username&amp;quot;);
+        this.password = (String) watsonCredentials.get(&amp;quot;password&amp;quot;);
+        this.base_url = (String) watsonCredentials.get(&amp;quot;url&amp;quot;);
+        this.profile_api = Config.WATSON_PROF_API;
+        this.visual_api = Config.WATSON_VIZ_API;
+        this.executor = Executor.newInstance().auth(username, password);
+        if (this.executor == null)
+        {
+            System.err.println(&amp;quot;Authentication failed in WatsonUserModeller.&amp;quot;);
+        }
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ok, so the app is basically done, we need to build our war file now, on the left side in Eclipse, open build.xml.  On the right hand side right click build [default] and then &amp;ldquo;Run As&amp;rdquo; and then &amp;ldquo;Ant Build&amp;rdquo;.  This will generate our WAR file for us that we will deploy.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/antbuild-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/antbuild-medium.png&#34; alt=&#34;antbuild 1024x528 Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;In the bottom it should say &amp;ldquo;BUILD SUCESSFULL&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/buildfinished-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/buildfinished-medium.png&#34; alt=&#34;buildfinished Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The next and last step involves deploy your app to bluemix.  This step requires the Cloud Foundry CLI to be installed (if you haven’t done this yet scroll back up the pre-req’s section above).&lt;/p&gt;
+
+&lt;p&gt;If you are on Windows open up the command prompt, if you are on a Mac or Linux open up the terminal.&lt;/p&gt;
+
+&lt;p&gt;Type the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf login -a https://api.ng.bluemix.net
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It will then ask for your username and password that you registered with for Bluemix. There are two important files in this directory.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;manifest.yml&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;webStarterApp.war&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We need to edit the &lt;code&gt;manifest.yml&lt;/code&gt; file and then we can deploy the app.
+Open the file in your favorite text editor or you can use Eclipse as well. The contents of the file are below.
+There are two important lines in here, host and name. These values need to be unique and match the app we deployed earlier. In my case the app name is talent-manager-awesome, so my file would then become what is below.&lt;/p&gt;
+
+&lt;p&gt;This value comes from Bluemix, lets open the Bluemix dashboard in our web browser again.  In the screenshot below we can just copy the name of the app and paste this into the &lt;code&gt;manifest.yml&lt;/code&gt; file.  So don’t copy my apps name exactly as it won’t work, it needs to be your app’s unique name.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/appname-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/appname-medium.png&#34; alt=&#34;appname Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Now the final step we need to cd (change directory) in our command prompt or terminal to where the &lt;code&gt;manifest.yml&lt;/code&gt; and webStarterApp.war are located.  For me its located at &lt;code&gt;/Users/jsloyer/Downloads/talent-manager-master/personafusion&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /Users/jsloyer/Downloads/talent-manager-master/personafusion
+cf push
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The cf push command pushes our app to Bluemix, a bunch of text will fly bay saying its deploying and eventually it will say the app is starting and then it is up and running.  Bluemix will give you a URL you can access your app at.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/apprunning-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/apprunning-medium.png&#34; alt=&#34;apprunning Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Voila!!!!  We created a Java web app using Cloudant and Watson on IBM Bluemix!&lt;/p&gt;
+
+&lt;p&gt;Source Code:
+&lt;a href=&#34;https://ibm.biz/talent-manager&#34;&gt;https://ibm.biz/talent-manager&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Feedback is welcome, please contact me on Twitter @jsloyer – &lt;a href=&#34;http://twitter.com/jsloyer&#34;&gt;http://twitter.com/jsloyer&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;For a video walkthrough of this demo please visit &lt;a href=&#34;http://ibm.biz/talent-manager-demo&#34;&gt;http://ibm.biz/talent-manager-demo&lt;/a&gt; or watch the video below!&lt;/p&gt;
+
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/9AFMY6m0LIU&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;This app was developed over the course of 48 hours at an internal hackathon. The developers and designers that worked on this are the following.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Eva XIAOHUI LUO&lt;/li&gt;
+&lt;li&gt;MICHAEL J. YOUNG&lt;/li&gt;
+&lt;li&gt;SEAN J. WELLECK&lt;/li&gt;
+&lt;li&gt;BRIAN T. HAN&lt;/li&gt;
+&lt;li&gt;MICHAEL POPLAVSKI&lt;/li&gt;
+&lt;li&gt;ALAN XIA&lt;/li&gt;
+&lt;li&gt;Jeff Sloyer&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

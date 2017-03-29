@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Javaee on JeffSloyer.io</title>
+    <link>http://www.jeffsloyer.io/tags/javaee/index.xml</link>
+    <description>Recent content in Javaee on JeffSloyer.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Code released under the Apache 2.0 license.</copyright>
+    <atom:link href="http://www.jeffsloyer.io/tags/javaee/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Deploying a Watson and Cloudant App with DevOps Services</title>
+      <link>http://www.jeffsloyer.io/post/deploying-a-watson-and-cloudant-app-with-devops-services/</link>
+      <pubDate>Mon, 24 Nov 2014 21:54:23 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/deploying-a-watson-and-cloudant-app-with-devops-services/</guid>
+      <description>&lt;p&gt;Backed by popular demand this is a continuation of the post &lt;a href=&#34;http://www.jeffsloyer.io/post/building-a-java-ee-app-on-ibm-bluemix-using-watson-and-cloudant/&#34;&gt;Building a Java EE app on IBM Bluemix Using Watson and Cloudant&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This post will detail how to build and deploy the app using &lt;a href=&#34;http://jazzhub.com&#34;&gt;IBM DevOps Services.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;There is a bit of magic behind this, its called &amp;ldquo;The Deploy to Bluemix Button&amp;rdquo;&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;Clicking the magic button below will setup the app using IBM DevOps services and deploy the whole application for you.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://bluemix.net/deploy?repository=https://github.com/IBM-Bluemix/talent-manager.git&#34;&gt;&lt;img src=&#34;https://deployment-tracker.mybluemix.net/stats/500deb1cbae77105c6d2ae42b50120cd/button.svg&#34; alt=&#34;Deploy to Bluemix&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So let&amp;rsquo;s talk about what this magic button does.  The button is actually just a shortcut to setting up the deployment pipeline for you.  What it does behind the covers is the following.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Clones the git project&lt;/li&gt;
+&lt;li&gt;Configures the devops pipeline&lt;/li&gt;
+&lt;li&gt;Triggers the pipeline
+
+&lt;ol&gt;
+&lt;li&gt;Compiles the &lt;code&gt;.war&lt;/code&gt; file&lt;/li&gt;
+&lt;li&gt;Deploys the application To Bluemix&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Isn&amp;rsquo;t that pretty cool?  Well what are you waiting for, click the button above!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Building a Java EE app on IBM Bluemix Using Watson, Cloudant</title>
+      <link>http://www.jeffsloyer.io/post/building-a-java-ee-app-on-ibm-bluemix-using-watson-and-cloudant/</link>
+      <pubDate>Tue, 14 Oct 2014 22:36:53 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/building-a-java-ee-app-on-ibm-bluemix-using-watson-and-cloudant/</guid>
+      <description>
+
+&lt;p&gt;Hey Y’all!&lt;/p&gt;
+
+&lt;p&gt;Jeff here again and something I am really excited about is Watson is &lt;a href=&#34;https://developer.ibm.com/bluemix/2014/10/08/watson-on-bluemix&#34;&gt;now available for anyone to use in Bluemix!&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Today we are going to be building an example app using Java, Cloudant, and Watson.&lt;/p&gt;
+
+&lt;p&gt;Ok let’s talk through what this app is going to do before we build it.&lt;/p&gt;
+
+&lt;p&gt;Meet Ivy (hello!)&lt;/p&gt;
+
+&lt;p&gt;She’s a talent manager at a growing tech startup.&lt;/p&gt;
+
+&lt;p&gt;She’s looking for a new hire that would be a good fit on her team but the company is so popular that she has a huge inventory of resumes to sort through. She’s looking for tools to help her, and tools beyond just simple tag filters.&lt;/p&gt;
+
+&lt;p&gt;With Watson services she can also start to solve for a problem like, &amp;ldquo;I’m looking for another developer like &amp;ldquo;[insert cool employee].&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;So in this case, the application can issue queries such as,&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Find me a Developer like Craig Smith.Then search through all possible candidate and return a ranked list of candidates sorted by highest-to-lowest percentage of personality resemblance. From here, searches can be refined by including technical skills. Find me a Developer like Craig Smith, and knows Java, C and Python.&lt;/p&gt;
+
+&lt;p&gt;&amp;ndash; &lt;cite&gt;Ivy (HR Manager)&lt;/cite&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Make sense??&lt;/p&gt;
+
+&lt;p&gt;Ok let’s jump right in.&lt;/p&gt;
+
+&lt;h2 id=&#34;pre-req-s&#34;&gt;Pre-req&amp;rsquo;s&lt;/h2&gt;
+
+&lt;p&gt;First thing you need to do is clone the github project with some starter code.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone https://github.com/IBM-Bluemix/talent-manager.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Or &lt;a href=&#34;https://github.com/IBM-Bluemix/talent-manager/archive/master.zip&#34;&gt;download a zip file&lt;/a&gt; if you don’t have git installed.&lt;/p&gt;
+
+&lt;p&gt;Next we need to complete a couple pre-req steps.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers&#34;&gt;Download Eclipse EE&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html&#34;&gt;Download and install Java 1.7 JDK&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.ng.bluemix.net/docs/#starters/install_cli.html?cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-JavaEEWatsonCloudant-_-Node-WatsonPersonalityInsights-_-BM-DevAd&#34;&gt;Download and install the Cloud Foundry CLI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://bluemix.net/?cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-JavaEEWatsonCloudant-_-Node-WatsonPersonalityInsights-_-BM-DevAd&#34;&gt;Sign up for a FREE IBM Bluemix account if you don’t have one yet&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Ok once we have all that setup we can start creating our app.&lt;/p&gt;
+
+&lt;h2 id=&#34;create-the-application&#34;&gt;Create the application&lt;/h2&gt;
+
+&lt;p&gt;First we need to sign into Bluemix, so open your browser and head on over to &lt;a href=&#34;http://bluemix.net/?cm_mmc=Display-JeffSloyer.io-_-BluemixSampleApp-JavaEEWatsonCloudant-_-Node-WatsonPersonalityInsights-_-BM-DevAd&#34;&gt;Bluemix&lt;/a&gt;.  We need to login.  Up at the top lets go ahead and click on Catalog.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/catalog-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/catalog-medium.png&#34; alt=&#34;catalog 300x99 Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Scroll down a little and click on Liberty&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/liberty-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/liberty-medium.png&#34; alt=&#34;liberty 1024x585 Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;On the right hand side we need to give our app a name.  Please note that this name must be unique.  Also remember this name as we will need it later…&lt;/p&gt;
+
+&lt;p&gt;Click create.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/new-app-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/new-app-medium.png&#34; alt=&#34;new app Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Bluemix will start deploying our app and Bluemix will start our app.&lt;/p&gt;
+
+&lt;p&gt;So next we need to add Cloudant and Watson to our app!&lt;/p&gt;
+
+&lt;p&gt;So do you that make sure you are in the dashboard and have your app open like the screencap below.  We will then click the &amp;ldquo;Add A Service&amp;rdquo; button.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/add-service-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/add-service-medium.png&#34; alt=&#34;add service 1024x683 Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;First let’s add Watson.  Scroll down until you find the &amp;ldquo;User Modeling&amp;rdquo; Service.  Go ahead and click that.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/user-modeling-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/user-modeling-medium.png&#34; alt=&#34;user modeling 1024x342 Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Again, all we have to do is click &amp;ldquo;Create&amp;rdquo; on the right hand side.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/watson-create-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/watson-create-medium.png&#34; alt=&#34;watson create Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Bluemix is going to ask us if we want to restage our app, we should click the &amp;ldquo;OK&amp;rdquo; button.  What Bluemix is asking us here is since we made a change to our app, the app needs to be restarted to bind in Watson.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/restage-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/restage-medium.png&#34; alt=&#34;restage Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next, let’s click &amp;ldquo;Add A Service&amp;rdquo; again.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/addserviceagain-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/addserviceagain-medium.png&#34; alt=&#34;addserviceagain Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;
+This time scroll down to the bottom and choose &amp;ldquo;Cloudant&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/cloudant-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/cloudant-medium.png&#34; alt=&#34;cloudant 1024x245 Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Then click &amp;ldquo;Create&amp;rdquo; on the right hand side.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantcreate-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantcreate-medium.png&#34; alt=&#34;cloudantcreate Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;It is going to ask us to restage our app again, go ahead and click &amp;ldquo;OK&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantrestage-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/cloudantrestage-medium.png&#34; alt=&#34;cloudantrestage Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we have all our services added.  Let’s go ahead and start getting some data imported.&lt;/p&gt;
+
+&lt;p&gt;On the dashboard for the app let’s go ahead and click on Cloudant.&lt;/p&gt;
+
+&lt;h2 id=&#34;explanation-of-cloudant&#34;&gt;Explanation of Cloudant&lt;/h2&gt;
+
+&lt;p&gt;So let’s pause and explain what Cloudant is.  Cloudant is a No-SQL database that is based on CouchDB.  The big difference between a relationship database and No-SQL database is illustrated below.  In the relationship database you have to have multiple tables to represent the data and have to use SQL and JOIN statements to get data from both tables.  In a No-SQL database which is commonly referred to as a document store database you stores JSON documents/data (as illustrated on the left below).&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/Figure5a-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/Figure5a-medium.png&#34; alt=&#34;Figure5a Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So back to the demo&amp;hellip;&lt;/p&gt;
+
+&lt;h2 id=&#34;eclipse-steps&#34;&gt;Eclipse Steps&lt;/h2&gt;
+
+&lt;p&gt;In Eclipse, right click on the project’s area on the left.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/import-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/import-medium.png&#34; alt=&#34;import Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Under General click existing project into workspace and click next&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/existingproject-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/existingproject-medium.png&#34; alt=&#34;existingproject Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next we want to find our project we downloaded from github.  We need to browse to the directory where it is.  Once you find the talent-manager folder, go one more level down into that into a folder called personafusion (as shown below). Click finish.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/finishimport-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/finishimport-medium.png&#34; alt=&#34;finishimport Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Next, we need to make a couple code edits…&lt;/p&gt;
+
+&lt;p&gt;In &lt;code&gt;src/com.ibm.personafusion/Config.java&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Line 10 currently reads like below.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public static final String CLOUDANT_NAME = &amp;quot;&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It needs to be changed to what is below.  This is our Cloudant database name we created.  If you used something other than &amp;ldquo;talent-manager here&amp;rdquo; type that in.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public static final String CLOUDANT_NAME = &amp;quot;talent-manager&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Go ahead and save that file and close it.&lt;/p&gt;
+
+&lt;p&gt;Next open &lt;code&gt;src/com.ibm.personafusion/CloudantClient.java&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;We need to update our constructor from what is below.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public CloudantClient()
+    {
+        this.httpClient = null;
+
+        //TODO read env VCAP_SERVICES and parse it into JSON
+        this.port = Config.CLOUDANT_PORT;
+        this.host = &amp;quot;&amp;quot;;
+        this.username = &amp;quot;&amp;quot;;
+        this.password = &amp;quot;&amp;quot;;
+        this.name = Config.CLOUDANT_NAME;
+        this.dbc = this.createDBConnector();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To this.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;private JSONArray cloudant;
+private JSONObject cloudantInstance;
+private JSONObject cloudantCredentials;
+
+  public CloudantClient()
+  {
+    this.httpClient = null;
+
+     try {
+        String VCAP_SERVICES = System.getenv(&amp;quot;VCAP_SERVICES&amp;quot;);
+        JSONObject vcap;
+        vcap = (JSONObject) JSONObject.parse(VCAP_SERVICES);
+
+        cloudant = (JSONArray) vcap.get(&amp;quot;cloudantNoSQLDB&amp;quot;);
+        cloudantInstance = (JSONObject) cloudant.get(0);
+        cloudantCredentials = (JSONObject) cloudantInstance.get(&amp;quot;credentials&amp;quot;);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      this.port = Config.CLOUDANT_PORT;
+      this.host = (String) cloudantCredentials.get(&amp;quot;host&amp;quot;);
+      this.username = (String) cloudantCredentials.get(&amp;quot;username&amp;quot;);
+      this.password = (String) cloudantCredentials.get(&amp;quot;password&amp;quot;);
+      this.name = Config.CLOUDANT_NAME;
+      this.dbc = this.createDBConnector();
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you notice we also added 3 global variables as well.&lt;/p&gt;
+
+&lt;p&gt;Next we need to update the Watson code as well.  This is located in &lt;code&gt;src/com.ibm.personafusion/services/WatonUserModeler.java&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Before:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public WatsonUserModeller() {
+    //TODO read env VCAP_SERVICES and parse it into JSON
+    this.username = &amp;quot;&amp;quot;;
+    this.password = &amp;quot;&amp;quot;;
+    this.base_url = &amp;quot;&amp;quot;;
+    this.profile_api = Config.WATSON_PROF_API;
+    this.visual_api = Config.WATSON_VIZ_API;
+    this.executor = Executor.newInstance().auth(username, password);
+    if (this.executor == null)
+    {
+        System.err.println(&amp;quot;Authentication failed in WatsonUserModeller.&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;private static JSONArray watson;
+private static JSONObject watsonInstance;
+private static JSONObject watsonCredentials;
+
+    private Executor executor;
+
+    public WatsonUserModeller()
+    {
+        try {
+            String VCAP_SERVICES = System.getenv(&amp;quot;VCAP_SERVICES&amp;quot;);
+            JSONObject vcap;
+            vcap = (JSONObject) JSONObject.parse(VCAP_SERVICES);
+
+            watson = (JSONArray) vcap.get(&amp;quot;user_modeling&amp;quot;);
+            watsonInstance = (JSONObject) watson.get(0);
+            watsonCredentials = (JSONObject) watsonInstance.get(&amp;quot;credentials&amp;quot;);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        this.username = (String) watsonCredentials.get(&amp;quot;username&amp;quot;);
+        this.password = (String) watsonCredentials.get(&amp;quot;password&amp;quot;);
+        this.base_url = (String) watsonCredentials.get(&amp;quot;url&amp;quot;);
+        this.profile_api = Config.WATSON_PROF_API;
+        this.visual_api = Config.WATSON_VIZ_API;
+        this.executor = Executor.newInstance().auth(username, password);
+        if (this.executor == null)
+        {
+            System.err.println(&amp;quot;Authentication failed in WatsonUserModeller.&amp;quot;);
+        }
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ok, so the app is basically done, we need to build our war file now, on the left side in Eclipse, open build.xml.  On the right hand side right click build [default] and then &amp;ldquo;Run As&amp;rdquo; and then &amp;ldquo;Ant Build&amp;rdquo;.  This will generate our WAR file for us that we will deploy.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/antbuild-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/antbuild-medium.png&#34; alt=&#34;antbuild 1024x528 Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;In the bottom it should say &amp;ldquo;BUILD SUCESSFULL&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/buildfinished-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/buildfinished-medium.png&#34; alt=&#34;buildfinished Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The next and last step involves deploy your app to bluemix.  This step requires the Cloud Foundry CLI to be installed (if you haven’t done this yet scroll back up the pre-req’s section above).&lt;/p&gt;
+
+&lt;p&gt;If you are on Windows open up the command prompt, if you are on a Mac or Linux open up the terminal.&lt;/p&gt;
+
+&lt;p&gt;Type the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf login -a https://api.ng.bluemix.net
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It will then ask for your username and password that you registered with for Bluemix. There are two important files in this directory.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;manifest.yml&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;webStarterApp.war&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We need to edit the &lt;code&gt;manifest.yml&lt;/code&gt; file and then we can deploy the app.
+Open the file in your favorite text editor or you can use Eclipse as well. The contents of the file are below.
+There are two important lines in here, host and name. These values need to be unique and match the app we deployed earlier. In my case the app name is talent-manager-awesome, so my file would then become what is below.&lt;/p&gt;
+
+&lt;p&gt;This value comes from Bluemix, lets open the Bluemix dashboard in our web browser again.  In the screenshot below we can just copy the name of the app and paste this into the &lt;code&gt;manifest.yml&lt;/code&gt; file.  So don’t copy my apps name exactly as it won’t work, it needs to be your app’s unique name.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/appname-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/appname-medium.png&#34; alt=&#34;appname Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Now the final step we need to cd (change directory) in our command prompt or terminal to where the &lt;code&gt;manifest.yml&lt;/code&gt; and webStarterApp.war are located.  For me its located at &lt;code&gt;/Users/jsloyer/Downloads/talent-manager-master/personafusion&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /Users/jsloyer/Downloads/talent-manager-master/personafusion
+cf push
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The cf push command pushes our app to Bluemix, a bunch of text will fly bay saying its deploying and eventually it will say the app is starting and then it is up and running.  Bluemix will give you a URL you can access your app at.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/06/apprunning-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/apprunning-medium.png&#34; alt=&#34;apprunning Building a Java EE app on IBM Bluemix Using Watson and Cloudant &#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Voila!!!!  We created a Java web app using Cloudant and Watson on IBM Bluemix!&lt;/p&gt;
+
+&lt;p&gt;Source Code:
+&lt;a href=&#34;https://ibm.biz/talent-manager&#34;&gt;https://ibm.biz/talent-manager&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Feedback is welcome, please contact me on Twitter @jsloyer – &lt;a href=&#34;http://twitter.com/jsloyer&#34;&gt;http://twitter.com/jsloyer&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;For a video walkthrough of this demo please visit &lt;a href=&#34;http://ibm.biz/talent-manager-demo&#34;&gt;http://ibm.biz/talent-manager-demo&lt;/a&gt; or watch the video below!&lt;/p&gt;
+
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/9AFMY6m0LIU&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;This app was developed over the course of 48 hours at an internal hackathon. The developers and designers that worked on this are the following.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Eva XIAOHUI LUO&lt;/li&gt;
+&lt;li&gt;MICHAEL J. YOUNG&lt;/li&gt;
+&lt;li&gt;SEAN J. WELLECK&lt;/li&gt;
+&lt;li&gt;BRIAN T. HAN&lt;/li&gt;
+&lt;li&gt;MICHAEL POPLAVSKI&lt;/li&gt;
+&lt;li&gt;ALAN XIA&lt;/li&gt;
+&lt;li&gt;Jeff Sloyer&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on JeffSloyer.io</title>
+    <link>http://www.jeffsloyer.io/tags/docker/index.xml</link>
+    <description>Recent content in Docker on JeffSloyer.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Code released under the Apache 2.0 license.</copyright>
+    <atom:link href="http://www.jeffsloyer.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Cross Compiling Golang with a Docker Alpine Container</title>
+      <link>http://www.jeffsloyer.io/post/cross-compiling-docker-alpine-golang/</link>
+      <pubDate>Mon, 19 Dec 2016 14:11:14 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/cross-compiling-docker-alpine-golang/</guid>
+      <description>
+
+&lt;p&gt;Recently at work I have been struggling with building a small/minimized Docker container of a Go app I have been working on.  I started with &lt;code&gt;busybox&lt;/code&gt; but it has a major short coming&amp;hellip;  CA certificates.  It isn&amp;rsquo;t trivial to get CA Certs on a &lt;code&gt;busybox&lt;/code&gt; container.  This problem effectively prevents you from using SSL or TLS with your app&amp;hellip;  This is a non-starter&amp;hellip;&lt;/p&gt;
+
+&lt;h2 id=&#34;enter-alpine&#34;&gt;Enter Alpine&lt;/h2&gt;
+
+&lt;p&gt;I was doing some reading and I have seen a couple articles mention Alpine, its effectively a slimmed down version of &lt;code&gt;busybox&lt;/code&gt; but it makes it trivially easy to install packages, in my case CA Certificates!  At this point I was really excited but I ran into some issues trying to compile the binary.&lt;/p&gt;
+
+&lt;h2 id=&#34;solution&#34;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;The solution is actually pretty simple, you need to build your Go app inside of a container and then copy the built container to your &amp;ldquo;production&amp;rdquo; Alpine image.&lt;/p&gt;
+
+&lt;p&gt;My solution uses the &lt;code&gt;Makefile&lt;/code&gt;, there is different ways of doing this but this is the simplest.&lt;/p&gt;
+
+&lt;p&gt;The first addition to the &lt;code&gt;Makefile&lt;/code&gt; is the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.PHONY: buildgo
+buildgo:
+    CGO_ENABLED=0 GOOS=linux go build -ldflags &amp;quot;-s&amp;quot; -a -installsuffix cgo .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above is intended to be run inside of a container but you can run it anywhere.  What it does is builds a binary that is statically linked with CGO disabled so it uses the statically linked cgo binary on in the container.  This is important as Alpine uses a custom lightweight subset of glibc called &lt;a href=&#34;http://www.musl-libc.org/&#34;&gt;&lt;code&gt;libc&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The next stanza you need for your &lt;code&gt;Makefile&lt;/code&gt; actually builds two containers.  One is your build container based on the &lt;code&gt;golang&lt;/code&gt; image and then copies the binary to your &lt;code&gt;Alpine&lt;/code&gt; container.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.PHONY: builddocker
+builddocker:
+    docker build -t yourorg/yourproject-build -f ./Dockerfile.build .
+    docker run -t yourorg/yourproject-build /bin/true
+    docker cp `docker ps -q -n=1`:/go/src/github.com/yourorg/yourproject/yourproject .
+    chmod 755 ./yourproject
+    docker build -t yourorg/yourproject .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To make the above work you need two Docker files.  They are below&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt; the following is assuming your depencies are already downloaded, I do this with a make task, &lt;code&gt;make deps&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.PHONY: deps
+deps:
+    glide install
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is nice/elegant as you don&amp;rsquo;t have to run this in the container so if you have private repo&amp;rsquo;s you don&amp;rsquo;t need to copy in ssh keys or GitHub tokens to download source code.  Just make sure your don&amp;rsquo;t have a &lt;code&gt;.dockerignore&lt;/code&gt; file as things in that file won&amp;rsquo;t be copied over&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Dockerfile.build&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;FROM golang:1.7.1
+
+WORKDIR /go/src/github.com/yourorg/yourproject/
+
+ADD . /go/src/github.com/yourorg/yourproject/
+RUN make buildgo
+CMD [&amp;quot;/bin/bash&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Dockerfile&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;FROM alpine
+
+COPY yourproject /go/bin/
+
+RUN apk add --update --no-cache ca-certificates
+
+ENV GOPATH /go
+
+ENTRYPOINT [&amp;quot;/go/bin/yourproject&amp;quot;]
+
+# Service listens on port 6969.
+EXPOSE 6969
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above assumes your binary is named the same as your project name.&lt;/p&gt;
+
+&lt;p&gt;The magic in &lt;code&gt;Dockerfile&lt;/code&gt; is the ability to install the CA certs with a single command.&lt;/p&gt;
+
+&lt;h2 id=&#34;gotchas&#34;&gt;Gotchas&lt;/h2&gt;
+
+&lt;p&gt;The only issue with disabling CGO is that some functionality in go requires it, most notably is from the &lt;code&gt;os/user&lt;/code&gt; package, the function &lt;code&gt;user.Current()&lt;/code&gt; makes use of it to determine a user&amp;rsquo;s home directory.  You might get an error like the following&amp;hellip;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;user: Current not implemented on linux/amd64
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The Apache Mesos project ran into this, &lt;a href=&#34;https://github.com/mesosphere/mesos-dns/commit/4b99d6cc16c2be170525cd572f6564b673ac90d0&#34;&gt;you can see their solution&lt;/a&gt;.  Their solution does a shortcoming though with their looping&amp;hellip;  Check out &lt;a href=&#34;https://github.com/jsloyer/softlayer-go/blob/af445630c2c18a51aebd3f9b0158a162310699db/session/session.go#L141-L152&#34;&gt;my change&lt;/a&gt; in the Go library for IBM Softlayer.  The pull PR is available &lt;a href=&#34;https://github.com/softlayer/softlayer-go/pull/32&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Please follow me on Twitter at &lt;a href=&#34;http://twitter.com/jsloyer&#34;&gt;@jsloyer&lt;/a&gt; and follow me on &lt;a href=&#34;https://www.youtube.com/channel/UCQb6E0NWy6kVglreLNigxng&#34;&gt;Youtube&lt;/a&gt;!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

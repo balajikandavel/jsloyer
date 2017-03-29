@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Postgresql on JeffSloyer.io</title>
+    <link>http://www.jeffsloyer.io/tags/postgresql/index.xml</link>
+    <description>Recent content in Postgresql on JeffSloyer.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Code released under the Apache 2.0 license.</copyright>
+    <atom:link href="http://www.jeffsloyer.io/tags/postgresql/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Tips for Migrating Ruby on Rails Applications to Bluemix</title>
+      <link>http://www.jeffsloyer.io/post/tips-for-migrating-ruby-on-rails-applications-to-bluemix/</link>
+      <pubDate>Thu, 05 Mar 2015 10:09:31 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/tips-for-migrating-ruby-on-rails-applications-to-bluemix/</guid>
+      <description>
+
+&lt;p&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/Ruby_on_Rails-logo-medium.png&#34; alt=&#34;Ruby on Rails.svg  231x300 Tips for Migrating Ruby on Rails Applications to Bluemix&#34; /&gt;Who doesn’t love some Ruby?  Bluemix definitely loves Ruby on Rails!  Sometimes running a Ruby on Rails app can be a little tricky, so I have included some tips and tricks for migrating your Ruby on Rails app to Bluemix. They will include:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Required gems&lt;/li&gt;
+&lt;li&gt;Code tweaks&lt;/li&gt;
+&lt;li&gt;Accessing external databases&lt;/li&gt;
+&lt;li&gt;Deploying your app&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h3 id=&#34;required-gems&#34;&gt;Required gems&lt;/h3&gt;
+
+&lt;p&gt;If you are using PostgreSQL you need to include &lt;code&gt;pg&lt;/code&gt;. Sqlite3 is included to get local development working as well.  Add the following line to your Gemfile.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;gem &#39;pg&#39;
+gem &#39;sqlite3&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Additionally there are two more gems you should include as well.  These gems will be included by some Ruby buildpacks but we should include them just in case.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;gem &amp;quot;cf-autoconfig&amp;quot;, &amp;quot;~&amp;gt; 0.2.1&amp;quot;
+gem &#39;rails_12factor&#39;, group: :production
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;code-tweaks-external-databases&#34;&gt;Code tweaks &amp;amp; external databases&lt;/h3&gt;
+
+&lt;p&gt;When you deploy your app to Bluemix, the Ruby buildpack will overwrite your database.yml file to pull in the attached DB service.  You should have a &lt;code&gt;database.yml&lt;/code&gt; file if you are running locally.  Below is a pretty standard one:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# SQLite version 3.x
+#   gem install sqlite3-ruby (not necessary on OS X Leopard)
+development:
+  adapter: sqlite3
+  database: db/development.sqlite3
+  pool: 5
+  timeout: 5000
+
+# Warning: The database defined as &amp;quot;test&amp;quot; will be erased and
+# re-generated from your development database when you run &amp;quot;rake&amp;quot;.
+# Do not set this db to the same as development or production.
+test:
+  adapter: sqlite3
+  database: db/test.sqlite3
+  pool: 5
+  timeout: 5000
+
+production:
+  adapter: sqlite3
+  database: db/production.sqlite3
+  pool: 5
+  timeout: 5000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you are using Redis and PostgreSQL, it can be a little tricky to use two databases.  Here is the config for using Redis with &lt;a href=&#34;https://github.com/resque/resque&#34;&gt;Resque&lt;/a&gt; (a task scheduler that is backed by Redis).  This file is specific to resque and its located at &lt;code&gt;config/initializers/resque.yml&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require &#39;resque/status_server&#39;
+require &#39;json&#39;
+
+rails_root = ENV[&#39;RAILS_ROOT&#39;] || File.dirname(__FILE__) + &#39;/../..&#39;
+rails_env = ENV[&#39;RAILS_ENV&#39;] || &#39;development&#39;
+
+resque_config = YAML.load_file(rails_root + &#39;/config/resque.yml&#39;)
+
+if rails_env != &amp;quot;production&amp;quot;
+    Resque.redis = resque_config[rails_env]
+else
+    vcap_services = JSON.parse(ENV[&#39;VCAP_SERVICES&#39;])
+    credentials = vcap_services[&amp;quot;rediscloud&amp;quot;][0][&amp;quot;credentials&amp;quot;]
+    Resque.redis = &amp;quot;:&amp;quot; + credentials[&amp;quot;password&amp;quot;] + &amp;quot;@&amp;quot; + credentials[&amp;quot;hostname&amp;quot;] + &amp;quot;:&amp;quot; + credentials[&amp;quot;port&amp;quot;]
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;deploy-your-app&#34;&gt;Deploy your app!&lt;/h3&gt;
+
+&lt;p&gt;To deploy your app, you need to create some services in Bluemix for your app.  We will do this with the Cloud Foundry command line.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;PostgreSQL:&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf create-service elephantsql turtle postgres-myapp
+#postgres-myapp is the name of your service, you can name this whatever you want
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Redis:&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf create-service rediscloud 25mb redis-myapp
+#redis-myapp is the name of your service, you can name this whatever you want
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;prepare-your-app&#34;&gt;Prepare your app&lt;/h3&gt;
+
+&lt;p&gt;Cloud Foundry requires a file called &lt;code&gt;manifest.yml&lt;/code&gt; to help bind services to your app and defining memory limits, CPU limits, and the number of instances required.  Belows is an example file I used.  The name of the app is the unique identifier of your app that will be in your account.  Hostname is the hostname of the app, it will be &lt;em&gt;yourhostname&lt;/em&gt;.mybluemix.net or if you are running in London it will be &lt;em&gt;yourhostname&lt;/em&gt;.eu-gb.mybluemix.net.  The &lt;code&gt;command&lt;/code&gt; is pretty important, it says it will run the &lt;code&gt;db:setup&lt;/code&gt; everytime the app is deployed, this should probably be changed to &lt;code&gt;db:migrate&lt;/code&gt; instead though.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;---
+applications:
+#swap out myapp-jbs for your own app name
+- name: myapp-jbs
+  memory: 1GB
+  instances: 1
+  path: .
+  command: bundle exec rake db:setup &amp;amp;&amp;amp; bundle exec rails s -p $PORT
+  services:
+  #swap out the below for your own
+  #cf cs elephantsql turtle yourownname
+  #cf cs rediscloud 25mb yourownname
+  #redis cloud has different plans, check out cf marketplace for the plans
+    - postgres-myapp
+    - redis-myapp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;push-your-app&#34;&gt;Push your app&lt;/h3&gt;
+
+&lt;p&gt;So we are on the final step, time to push our app!  If you are using Ruby 2.2.0, it’s not officially supported by Cloud Foundry, but there is a buildpack that is part of the Cloud Foundry community github that we can use.  It tracks pretty close to the latest Ruby and Rails.  For my app I used Ruby 2.2.0 and Rails 4.2.0:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf push -b https://github.com/cloudfoundry/ruby-buildpack.git
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;one-last-little-tip&#34;&gt;One last little tip…&lt;/h3&gt;
+
+&lt;p&gt;One last little tweak if you are familiar with Git it will make your life in Cloud Foundry land a little better.  There is a file called &lt;code&gt;.cfignore&lt;/code&gt; that goes in the root of your project, it basically acts like &lt;code&gt;.gitgnore&lt;/code&gt; and prevents files being updated to Cloud Foundry.  So for Ruby on Rails you probably would want your vendor folder here and etc.  I have put one below that I use.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.DS_STORE
+# Ignore bundler config
+/.bundle
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+
+# Ignore all logfiles and tempfiles.
+/log/*.log
+/tmp
+
+# Ignore coverage
+/coverage
+
+# Tag file
+tags
+.idea/
+
+.swo
+.swp
+
+.envrc
+
+cscope*
+
+doc/*
+
+.jira-url
+
+vendor/*
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you have any issues please reach out to us on &lt;a href=&#34;http://stackoverflow.com/questions/tagged/bluemix&#34;&gt;StackOverflow&lt;/a&gt;!  In the top righthand corner click “Ask Question”.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

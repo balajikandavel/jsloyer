@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Flask on JeffSloyer.io</title>
+    <link>http://www.jeffsloyer.io/tags/flask/index.xml</link>
+    <description>Recent content in Flask on JeffSloyer.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Code released under the Apache 2.0 license.</copyright>
+    <atom:link href="http://www.jeffsloyer.io/tags/flask/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>IoT Python app with a Raspberry Pi and Bluemix</title>
+      <link>http://www.jeffsloyer.io/post/iot-python-app-with-a-raspberry-pi-and-bluemix/</link>
+      <pubDate>Thu, 02 Apr 2015 10:29:53 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/iot-python-app-with-a-raspberry-pi-and-bluemix/</guid>
+      <description>
+
+&lt;p&gt;This is an extension/continuation from the blog post on how to create a &lt;a href=&#34;http://www.jeffsloyer.io/post/simple-hello-world-python-app-using-flask/&#34;&gt;basic Python webapp&lt;/a&gt;.  In this tutorial we are going to go through how to integrate a Python Flask webapp in Bluemix with the &lt;a href=&#34;https://internetofthings.ibmcloud.com/&#34;&gt;Internet of Things Foundation&lt;/a&gt; in Bluemix with a Raspberry Pi and two sensors on the Raspberry Pi.  The tutorial also uses Twilio to interact with the Raspberry Pi.&lt;/p&gt;
+
+&lt;p&gt;So what does this look like?  Here is a simple architecture diagram.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/raspberrypidiagram-medium.png&#34; alt=&#34;raspberrypidiagram IoT Python app with a Raspberry Pi and Bluemix&#34; /&gt;
+&lt;!-- more --&gt;&lt;/p&gt;
+
+&lt;p&gt;In the above diagram there is two flows:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The first flow involves pressing a HTML button in the Python Flask app in Bluemix to either turn on or off an LED on the Raspberry Pi.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;The second flow involves pressing a physical button on the breadboard on the Raspberry Pi and using the IoT service in Bluemix and our app in Bluemix it will send a text message of our choosing to a phone number we enter in the Python Flask app in Bluemix using Twilio.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This all took only about 100 lines of code, pretty cool huh?&lt;/p&gt;
+
+&lt;p&gt;If you prefer to watch a video of this instead of going through the written steps in this tutorial, check out the video below.&lt;/p&gt;
+
+&lt;h2 id=&#34;setup&#34;&gt;Setup&lt;/h2&gt;
+
+&lt;p&gt;There is two parts to setting this up.  If we take a look at the architecture diagram above we see that there is a Raspberry Pi piece and then a Bluemix piece.  We are going to go through the Raspberry Pi piece first then we will go through the Bluemix piece.&lt;/p&gt;
+
+&lt;h2 id=&#34;raspberry-pi-setup-steps&#34;&gt;Raspberry Pi Setup Steps&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Sign up for a Bluemix account, visit &lt;a href=&#34;http://bluemix.net/?cm_mmc=developerWorks-_-dWdevcenter-_-bluemix-_-lp&#34;&gt;http://bluemix.net&lt;/a&gt; in your web browser and click “Sign-up” in the top right.  We require a couple bits of information&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Wait for an email to arrive, it should only take a couple minutes.  There should be a link in the email that says “Click here to complete your registration”, click that.  Sign in with the username and password you created from step 1.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Obtain a Raspberry Pi, a bread board, wires, a LED, and a button  (your best bet is getting a starter kit such as the &lt;a href=&#34;http://www.canakit.com/&#34;&gt;Canakit&lt;/a&gt;)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Place an LED in the breadboard (place the shorter side to the left)&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/led-medium.png&#34; alt=&#34;led IoT Python app with a Raspberry Pi and Bluemix&#34; /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Place a 220 ohm resistor in the breadboard connecting the short side (the left side of the LED) to the ground rail (the rail with the – sign).  Make sure to place the side of the resistor with the red stripes closest to the LED&lt;em&gt;NOTE:&lt;/em&gt; The way the breadboard works is connections run vertically not horizontally&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/resistor-medium.png&#34; alt=&#34;resistor IoT Python app with a Raspberry Pi and Bluemix&#34; /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Connect a wire from the ground rail to the GND on the pinout board&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/ground-medium.png&#34; alt=&#34;ground IoT Python app with a Raspberry Pi and Bluemix&#34; /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;On the right side of the LED, connect a wire to the the port labeled 17.&lt;strong&gt;NOTE:&lt;/strong&gt; The way the breadboard works is connections run vertically not horizontally.&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/gpio17-medium.png&#34; alt=&#34;gpio17 IoT Python app with a Raspberry Pi and Bluemix&#34; /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Place the button in the breadboard, it takes a bit of force to press it in all the way.  It won’t break it.&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/button-medium.png&#34; alt=&#34;button IoT Python app with a Raspberry Pi and Bluemix&#34; /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Connect a wire from the right side of the button to the ground rail.&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/buttonground-medium.png&#34; alt=&#34;buttonground IoT Python app with a Raspberry Pi and Bluemix&#34; /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Connect a wire from the ground rail to a GND port, it doesn’t matter which one it is&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/buttongroundrail-medium.png&#34; alt=&#34;buttongroundrail IoT Python app with a Raspberry Pi and Bluemix&#34; /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Lastly, connect a wire from the left side of the button to GPIO port 18.&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/gpio18-medium.png&#34; alt=&#34;gpio18 IoT Python app with a Raspberry Pi and Bluemix&#34; /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Next we need to either use the console for our Raspberry Pi and the terminal application on the device itself or use SSH.  I am going to use SSH.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;To get the IP address of your Raspberry Pi the easiest thing is to open up the terminal app on the Raspberry Pi, it is under accessories -&amp;gt; Terminal&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Type &lt;code&gt;ifconfig&lt;/code&gt;..  If you are connected over Ethernet the IP address will be under eth0, if you are connected over wifi, the IP address will be under wlan0&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Next we need to ssh into the device.—Windows, download Putty and use that to connect to the IP address—Mac and Linux, open the Terminal app, type &lt;code&gt;ssh pi@myipaddress&lt;/code&gt; where myipaddress is the IP address of the Raspberry Pi, ex. &lt;code&gt;192.168.1.65&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;The password is raspberrypi&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;We need to run some commands to update our Raspberry Pi, run the following.  It will ask you to confirm with the “Y” key&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get update
+sudo-apt-get upgrade
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Next we need to install a helper library for using GPIO&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone git://git.drogon.net/wiringPi
+cd wiringPi
+./build
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Next we need to install the IoT library on the Raspberry Pi&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl -LO https://github.com/ibm-messaging/iot-raspberrypi/releases/download/1.0.2/iot_1.0-1_armhf.deb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;sudo dpkg -i iot_1.0-1_armf.deb&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;We need to get the device ID of our raspberry Pi do this run the following and save the output&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;service iot getdeviceid
+#example output
+The device id is b827eba5b236
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We will want to copy the id &lt;code&gt;b827eba5b236&lt;/code&gt;, yours obviously will be different&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Open up a web browser and goto &lt;a href=&#34;http://bluemix.net/&#34;&gt;bluemix.net&lt;/a&gt;, and click on “Catalog” in the top.  Scroll down to the very bottom and click “Internet of Things”.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Give the service a name, use iot-python (you must do this exactly or later things won’t work), for App choose “Leave unbound”, click “Create”.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;On the left of the next page click “Launch dashboard”.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;At the top click on “Devices”.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Click “Add Device”.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;For the second field (it says e.g. mydevice type) type in exactly &lt;code&gt;raspberrypi&lt;/code&gt; (you need to have it spelled like this or there will be issues).  For device ID paste in the device ID we got from step 20, mine is &lt;code&gt;b827ba5b236&lt;/code&gt;.  Click continue.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;On the next page it will show something like below, copy this and switch back to terminal on your Raspberry Pi.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;org=pwftki
+type=raspberrypi
+id=000000000000
+auth-method=token
+auth-token=cXQaGx8o!a9HwxM-ka
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Choose your favorite text editor but I am going to use vi.  Type the following to open the file we want to edit.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo vi /etc/iotsample-raspberrypi/device.cfg
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;To paste the text press the “i” key.  Then paste the text, this will depend on the OS you are on.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;To save the file hit the “Esc” key.  Then Type “:wq” and then press “Enter”.  That will save the file.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Let’s restart the IoT service on our Raspberry Pi to start sending the data to the IoT service&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo service iot restart
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Next we need to download the Python code to run on the Raspberry Pi, run the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd ~
+git clone https://github.com/IBM-Bluemix/python-iot-raspberry-pi.git
+cd python-iot-raspberry-pi
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Now we need to install the package manager for Python:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install python-pip
+sudo pip install -r requirements.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;One last bit, we need a config file for our app before we can start it.  Lets run the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;vi ~/device.cfg
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Remember this is vi again, so remember the shortcuts for inserting text and saving it from step 29,30.  The contents of the file should look something like below, replacing yourapikey, yourdeviceid, youriotorg, and yourapitoken with the correct values. To generate the API key and token we can get them from going back to the web browser and going to the Internet of Things Foundation.  At the top  click on API Keys.  Click “New API Key”.  The values that it gives you will be the values you use for the yourapitoken and yourapikey. &lt;code&gt;yourdeviceid&lt;/code&gt; is the value we got from step 20 &lt;code&gt;youriotorg&lt;/code&gt; is from step 27, it is also in your config file; in my case my value is pwftki. Let’s save the file (remember, “Esc”, “:wq”, “Enter”)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[application]
+org=youriotorg
+id=yourdeviceid
+auth-method=apikey
+auth-key=yourapikey
+auth-token=yourauthtoken
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;OK, so now we can launch/start the app on the Raspberry Pi.  To do that run the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd ~/python-iot-raspberry-pi
+sudo python client.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;bluemix-app-setup-steps&#34;&gt;Bluemix App Setup Steps&lt;/h2&gt;
+
+&lt;h6 id=&#34;note-the-following-steps-are-to-be-run-on-your-desktop-not-the-raspberry-pi&#34;&gt;NOTE:  The following steps are to be run on your desktop NOT the Raspberry Pi.&lt;/h6&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;We will need to install the Cloud Foundry CLI to deploy our app to Bluemix.  To do this head over to &lt;a href=&#34;https://github.com/cloudfoundry/cli/releases&#34;&gt;https://github.com/cloudfoundry/cli/releases&lt;/a&gt;.  Choose the appropriate installer for your platform, download it and run the installer.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;So let’s open up a new terminal Window, we will need to do the rest on our development machine/laptop.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;We need to download the Python code for our app.  Run the following.  If you don’t have git installed follow these instructions &lt;a href=&#34;http://git-scm.com/book/en/v2/Getting-Started-Installing-Git&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone https://github.com/IBM-Bluemix/python-iot-raspberry-pi.git
+cd python-iot-raspberry-pi
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;In your web browser go back to the tab that you have Bluemix open with.  In the top click “Catalog”, scroll down to find “Twilio”.  Click on that.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;If you already have a Twilio account and want to use that skip to step 6.  If you don’t have a Twilio account on the right hand side click “Register at Twilio”.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Twilio will ask you for some information and you will need to verify your phone number.  This is important as only numbers verified with the free plan will work with your app.   If you want to be able to text any number you need to pay for Twilio, its $1/month/phone number.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Once you are signed up for your account, head to &lt;a href=&#34;https://www.twilio.com/user/account/voice-messaging&#34;&gt;https://www.twilio.com/user/account/voice-messaging&lt;/a&gt;.  Near the top right there will be a twistie that says “Show API Credentials”, click that.  There is two pieces of information here, the Account SID and Auth Token.  We will need to copy these back to the Bluemix tab we have open with Twilio.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Paste your Account SID in the field in Bluemix that says Account SID, paste your Auth Token in the Auth Token field.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;For the Service name you must type in this exactly iot-twilio&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;For the App, choose “Leave Unbound”&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Click Create.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Switch back to the terminal that you have on your local dev machine, not your Raspberry Pi.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;We need to login to Bluemix, to do that, type &lt;code&gt;cf login -a https://api.ng.bluemix.net&lt;/code&gt;. It will ask you for your username and password. This is from step 1 in the Raspberry Pi section above.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;To deploy our application all we need to do now is type &lt;code&gt;cf push myappname&lt;/code&gt; where myapp name is a unique name you choose for your app.&lt;em&gt;NOTE:&lt;/em&gt; If you get an error mentioning a route is taken, choose a different name and run &lt;code&gt;cf push&lt;/code&gt; with a new app name.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;It will take about a minute or two to deploy your application but eventually you will get some output that looks like the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;requested state: started
+instances: 1/1
+usage: 1G x 1 instances
+urls: testapp-jbs.mybluemix.net
+last uploaded: Fri Jul 31 00:25:17 UTC 2015
+stack: lucid64
+buildpack: SDK for Node.js(TM) (ibm-node.js-0.12.7)
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;There is a row that says &lt;code&gt;urls:&lt;/code&gt;, copy that URL and paste it into your browser.&lt;/p&gt;
+
+&lt;p&gt;If everything went well you should have a page that looks like the following:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/06/pythoniotapp-medium.png&#34; alt=&#34;pythoniotapp IoT Python app with a Raspberry Pi and Bluemix&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;An important note here, do not press the button on the Raspberry Pi until you enter a phone number and text message here, if you do the app will crash.  If you do this you can restart you app with &lt;code&gt;cf restart myappname&lt;/code&gt;, where myappname is the name of the app you chose above.&lt;/p&gt;
+
+&lt;p&gt;When you click the “On” button it should turn the light on for you.  If you press the “Off” button it should turn the light off.&lt;/p&gt;
+
+&lt;h2 id=&#34;feedback&#34;&gt;Feedback&lt;/h2&gt;
+
+&lt;p&gt;Follow us on Twitter at &lt;a href=&#34;https://twitter.com/IBMBluemix&#34;&gt;@IBMBluemix&lt;/a&gt; and follow the author of this blog post (Jeff Sloyer, one of our developer advocates) at &lt;a href=&#34;https://twitter.com/jsloyer&#34;&gt;@jsloyer&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Simple Hello World Python App using Flask</title>
+      <link>http://www.jeffsloyer.io/post/simple-hello-world-python-app-using-flask/</link>
+      <pubDate>Mon, 30 Mar 2015 10:17:51 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/simple-hello-world-python-app-using-flask/</guid>
+      <description>
+
+&lt;p&gt;Hey Y’all!  Jeff here again, today we are going to be going through some really simple steps to get started deploying a simple hello world python app using Flask on Bluemix.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://flask.pocoo.org/&#34;&gt;Flask&lt;/a&gt; is an awesome and really lightweight framework in Python to create powerful webapps.  We are going to use it make a really simple hello world app in Python though.
+&lt;!-- more --&gt;&lt;/p&gt;
+
+&lt;p&gt;In this post we are going to go through the written instructions on how to do it but if you prefer watching a video check out the video below.&lt;/p&gt;
+
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/b-SF3bgaQTw&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;In this tutorial we are going to go through two steps to deploy the app.  One is a simple click a button to deploy to your app, we will go through that first.  The second approach is a little more in depth and involves installing a command line tool to upload the application.  This is great and preferred if you will be editing the code or you want to dig into the nuts and bolts of things.&lt;/p&gt;
+
+&lt;h2 id=&#34;simple-getting-started-steps&#34;&gt;Simple Getting Started Steps&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Sign up for a Bluemix account, visit &lt;a href=&#34;http://bluemix.net/?cm_mmc=developerWorks-_-dWdevcenter-_-bluemix-_-lp&#34;&gt;http://bluemix.net&lt;/a&gt; in your web browser and click “Sign-up” in the top right.  We require a couple bits of information&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Wait for an email to arrive, it should only take a couple minutes.  There should be a link in the email that says “Click here to complete your registration”, click that.  Sign in with the username and password you created from step 1.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Click the button below (this will deploy the app for you).&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://bluemix.net/deploy?repository=https%3A%2F%2Fgithub.com%2FIBM-Bluemix%2Fpython-hello-world-flask.git&amp;amp;cm_mmc=developerWorks-_-dWdevcenter-_-bluemix-_-lp&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/03/button-medium.png&#34; alt=&#34;button Simple Hello World Python App using Flask&#34; /&gt;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;You will come to a page that has a button called “Login”.  Go ahead and click that.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Next you will be taken to a page that asks you to create an alias.  If my email address was jeff.davis251@gmail.com I would use jeffdavis251.  Hint it doesn’t like periods &lt;img src=&#34;http://www.jeffsloyer.io/images/2015/03/icon_smile-medium.gif&#34; alt=&#34;icon smile Simple Hello World Python App using Flask&#34; /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Click Create.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;It will take you to another page, click “Continue”.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Now everything is basically setup, it will take us to a page that looks like what is below, just click the “Deploy” button.
+&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/03/deploybutton1-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/03/deploybutton1-medium.png&#34; alt=&#34;deploybutton1 1024x541 Simple Hello World Python App using Flask&#34; /&gt;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Grab a cup of coffee or take a bathroom break, well a quick one!  It will only take a minute or two to deploy the app.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;In a hot second you should be taken to a page that looks like what is below.  To view your hello world app just click the button “View your App”.
+&lt;a href=&#34;http://www.jeffsloyer.io/images/2015/03/deploy-done-medium.png&#34;&gt;&lt;img src=&#34;http://www.jeffsloyer.io/images/2015/03/deploy-done-medium.png&#34; alt=&#34;deploy done 1024x544 Simple Hello World Python App using Flask&#34; /&gt;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Thats it for the quick and easy steps.  Let’s go through the more advanced steps where you can modify the code and upload the app from your own machine.&lt;/p&gt;
+
+&lt;h2 id=&#34;a-little-more-involved-steps&#34;&gt;A little more involved steps&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;This will assume you have signed up for an account, steps 1 and 2 from above.  If you haven’t signed up for an account scroll up and do that now.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Install Git, follow the instructions from &lt;a href=&#34;http://git-scm.com/book/en/v2/Getting-Started-Installing-Git&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Install the Cloud Foundry command line.  Choose the appropriate installer from &lt;a href=&#34;https://github.com/cloudfoundry/cli/releases&#34;&gt;here&lt;/a&gt; and download it and run the installer.  You might be asking what Cloud Foundry is, its the open source Platform as a Service that Bluemix is built on.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Open up the terminal/command prompt
+Mac – Click on the finder icon in the top right, search for terminal and open that
+Linux – Depends on your distro, but you probably know where it is, in the menu look for accessories usually then terminal, open that
+Windows – Click the start button, search for cmd, open that&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Type the following.  The following commands downloads the starter app and puts us into the right directory to deploy the app.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone https://github.com/IBM-Bluemix/python-hello-world-flask.git
+cd python-hello-world-flask
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Next we need to login to Bluemix, we will use the terminal window that we already have open for this.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf login -a https://api.ng.bluemix.net
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: It will ask for your username and password, this is the one you just created.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Last step, we just need to upload the app, run the following replacing myappname with the URL you want your app to be available at.  Bluemix will give you a URL based on this name.  If I chose jeff-is-awesome, my app would be available at &lt;a href=&#34;http://jeff-is-awesome.mybluemix.net&#34;&gt;http://jeff-is-awesome.mybluemix.net&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cf push myappname
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If you get an error mentioning something like below, that means someone already has an app using that URL, just choose another one and rerun the command&lt;/p&gt;
+
+&lt;h4 id=&#34;error&#34;&gt;Error:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;[01:54 PM] jsloyer@Jeffs-MacBook-Pro [python-hello-world-flask]&amp;gt;cf push jeff-is-awesome
+Creating app jeff-is-awesome in org jbsloyer@us.ibm.com / space demos as jbsloyer@us.ibm.com...
+OK
+
+Creating route jeff-is-awesome.mybluemix.net...
+FAILED
+Server error, status code: 400, error code: 210003, message: The host is taken: jeff-is-awesome
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;fix&#34;&gt;Fix:&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;cf push myappname-unique
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You will basically get some output that looks like the following.  It will give you the URL to access your app.  In this case the URL to my app is &lt;code&gt;http://jeff-is-awesome2.mybluemix.net&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[02:05 PM] jsloyer@Jeffs-MacBook-Pro [python-hello-world-flask]&amp;gt;cf push jeff-is-awesome2
+Updating app jeff-is-awesome2 in org jbsloyer@us.ibm.com / space demos as jbsloyer@us.ibm.com...
+
+... snip ...
+
+App jeff-is-awesome2 was started using this command `python hello.py`
+
+Showing health and status for app jeff-is-awesome2 in org jbsloyer@us.ibm.com / space demos as jbsloyer@us.ibm.com...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;wrapping-up&#34;&gt;Wrapping Up&lt;/h2&gt;
+
+&lt;p&gt;To recap we just went through two different ways to deploy a python app to Bluemix.  The first method is really quick so you can see the power of the platform and get something up and running quick.  The second approach used the command line so you can modify the app and hack on it and customize it.&lt;/p&gt;
+
+&lt;h2 id=&#34;feedback&#34;&gt;Feedback&lt;/h2&gt;
+
+&lt;p&gt;Follow us on Twitter at &lt;a href=&#34;http://twitter.com/IBMBluemix&#34;&gt;@IBMBluemix&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Follow the author of this blog post (Jeff Sloyer, one of our developer advocates) at &lt;a href=&#34;http://twitter.com/jsloyer&#34;&gt;@jsloyer&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

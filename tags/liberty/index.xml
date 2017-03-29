@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Liberty on JeffSloyer.io</title>
+    <link>http://www.jeffsloyer.io/tags/liberty/index.xml</link>
+    <description>Recent content in Liberty on JeffSloyer.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Code released under the Apache 2.0 license.</copyright>
+    <atom:link href="http://www.jeffsloyer.io/tags/liberty/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Deploying a Watson and Cloudant App with DevOps Services</title>
+      <link>http://www.jeffsloyer.io/post/deploying-a-watson-and-cloudant-app-with-devops-services/</link>
+      <pubDate>Mon, 24 Nov 2014 21:54:23 -0500</pubDate>
+      
+      <guid>http://www.jeffsloyer.io/post/deploying-a-watson-and-cloudant-app-with-devops-services/</guid>
+      <description>&lt;p&gt;Backed by popular demand this is a continuation of the post &lt;a href=&#34;http://www.jeffsloyer.io/post/building-a-java-ee-app-on-ibm-bluemix-using-watson-and-cloudant/&#34;&gt;Building a Java EE app on IBM Bluemix Using Watson and Cloudant&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This post will detail how to build and deploy the app using &lt;a href=&#34;http://jazzhub.com&#34;&gt;IBM DevOps Services.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;There is a bit of magic behind this, its called &amp;ldquo;The Deploy to Bluemix Button&amp;rdquo;&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;Clicking the magic button below will setup the app using IBM DevOps services and deploy the whole application for you.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://bluemix.net/deploy?repository=https://github.com/IBM-Bluemix/talent-manager.git&#34;&gt;&lt;img src=&#34;https://deployment-tracker.mybluemix.net/stats/500deb1cbae77105c6d2ae42b50120cd/button.svg&#34; alt=&#34;Deploy to Bluemix&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So let&amp;rsquo;s talk about what this magic button does.  The button is actually just a shortcut to setting up the deployment pipeline for you.  What it does behind the covers is the following.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Clones the git project&lt;/li&gt;
+&lt;li&gt;Configures the devops pipeline&lt;/li&gt;
+&lt;li&gt;Triggers the pipeline
+
+&lt;ol&gt;
+&lt;li&gt;Compiles the &lt;code&gt;.war&lt;/code&gt; file&lt;/li&gt;
+&lt;li&gt;Deploys the application To Bluemix&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Isn&amp;rsquo;t that pretty cool?  Well what are you waiting for, click the button above!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
